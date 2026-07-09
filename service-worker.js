@@ -1,7 +1,8 @@
 /* CRC Kiosk Phase 1.1 offline-first service worker */
-const CACHE_VERSION = 'crc-kiosk-c3a18f92ce6c';
+const CACHE_VERSION = 'crc-kiosk-c0ee335aa53a';
 const PRECACHE_URLS = [
   "./CHANGELOG.md",
+  "./PWA_PHASE_1_1_NOTES.md",
   "./README.md",
   "./crc_kiosk_versionA_2_1.html",
   "./crc_kiosk_versionA_2_1_datafix.html",
@@ -20,7 +21,9 @@ const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
   "./offline.html",
-  "./pwa-register.js"
+  "./pwa-register.js",
+  "./screenshots/screenshot-mobile.png",
+  "./screenshots/screenshot-wide.png"
 ];
 const OFFLINE_URL = './offline.html';
 

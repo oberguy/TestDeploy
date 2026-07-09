@@ -20,3 +20,6 @@ This package keeps the existing kiosk UI and application logic unchanged while a
 Upload the contents of this ZIP to the root of the GitHub repository used by GitHub Pages.
 
 After deployment, visit the app once while online, then test offline by disabling Wi-Fi and reopening or refreshing the installed app.
+
+
+Update: Added manifest screenshots for richer PWA install UI on desktop and mobile.

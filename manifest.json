@@ -36,5 +36,20 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshots/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "CRC Kiosk desktop view"
+    },
+    {
+      "src": "./screenshots/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "label": "CRC Kiosk mobile view"
+    }
   ]
 }
