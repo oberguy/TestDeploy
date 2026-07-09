@@ -1,9 +1,0 @@
-{
-  "name": "CRC Kiosk",
-  "short_name": "CRC Kiosk",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "icons": []
-}
