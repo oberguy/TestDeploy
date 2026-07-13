@@ -155,3 +155,11 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Increased card-back text and bullets to 18px.
 - Increased QR-panel text slightly.
 - Preserved current card heights and navigation clearance.
+
+
+## Accessibility tab-order correction
+- Added tabindex=0 to every flip card.
+- Added role=button, aria-expanded, and descriptive aria-label values.
+- Added Enter and Space keyboard activation.
+- Added a strong visible keyboard-focus outline.
+- Updated the service-worker cache version.

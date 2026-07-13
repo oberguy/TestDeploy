@@ -679,6 +679,17 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
 @media (prefers-reduced-motion: reduce){
  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Keyboard focus visibility for interactive cards */
+.flip-card[tabindex="0"]:focus-visible {
+  outline: 5px solid #ffbf47;
+  outline-offset: 5px;
+  border-radius: 18px;
+}
+.flip-card[tabindex="0"]:focus:not(:focus-visible) {
+  outline: none;
+}
+
 </style>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#062e63">
@@ -1108,6 +1119,30 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
     var restartBtn = document.getElementById('restartBtn');
     if (restartBtn) restartBtn.addEventListener('click', function() { if (currentSession) { currentSession.end_time = new Date().toISOString(); saveSession(); } currentSession = null; document.querySelectorAll('.flip-card.flipped').forEach(function(c){c.classList.remove('flipped');}); showScreen(0); });
     document.querySelectorAll('.flip-card').forEach(function(card) { card.addEventListener('click', function() { card.classList.toggle('flipped'); if (card.classList.contains('flipped')) recordFlip(card.getAttribute('data-card')); }); });
+
+    document.querySelectorAll('.flip-card').forEach(function(card) {
+      var titleElement = card.querySelector('.card-title');
+      var title = titleElement ? titleElement.textContent.trim() : 'Information card';
+
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-expanded', card.classList.contains('flipped') ? 'true' : 'false');
+      card.setAttribute('aria-label', title + '. Press Enter or Space to flip the card.');
+
+      card.addEventListener('click', function() {
+        var isFlipped = card.classList.contains('flipped');
+        card.setAttribute('aria-expanded', isFlipped ? 'true' : 'false');
+        card.setAttribute('aria-label', title + (isFlipped ? '. Showing details. Press Enter or Space to flip back.' : '. Press Enter or Space to flip the card.'));
+      });
+
+      card.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          card.click();
+        }
+      });
+    });
+
     var adminBtn = document.getElementById('adminBtn'), adminPanel = document.getElementById('adminPanel');
     if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() {
       if (adminPanel.classList.contains('show')) {
