@@ -379,13 +379,121 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   #screen-1 .why-img {
     width: auto;
     height: auto;
-    max-width: 96%;
-    max-height: calc(100dvh - 330px);
+    max-width: 91%;
+    max-height: calc(100dvh - 350px);
     object-fit: contain;
   }
 
   #screen-1 .nav {
     flex-shrink: 0;
+  }
+}
+
+
+/* Screening Tests iPad landscape scrolling refinement */
+@media (orientation: landscape) and (min-width: 1000px) and (max-width: 1366px) and (pointer: coarse) {
+  #screen-2 {
+    overflow: hidden;
+  }
+
+  #screen-2 .content {
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 30px 8px;
+    padding-bottom: 82px;
+  }
+
+  #screen-2 h2 {
+    font-size: 34px;
+    margin: 0 0 4px;
+  }
+
+  #screen-2 .subtitle {
+    font-size: 17px !important;
+    line-height: 1.15;
+    margin: 0 0 6px !important;
+  }
+
+  #screen-2 .card-grid.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 4px;
+    min-width: 0;
+  }
+
+  #screen-2 .card-grid.three .flip-card {
+    min-width: 0;
+    min-height: 245px;
+    height: 245px;
+  }
+
+  #screen-2 .face {
+    padding: 18px;
+  }
+
+  #screen-2 .icon {
+    font-size: 44px;
+    margin-bottom: 7px;
+  }
+
+  #screen-2 .card-title {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  #screen-2 .card-front-text {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  #screen-2 .card-grid.three .face.back {
+    padding: 16px 18px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #screen-2 .card-grid.three .back p,
+  #screen-2 .card-grid.three .back li {
+    font-size: 16px;
+    line-height: 1.18;
+    margin-bottom: 6px;
+  }
+
+  #screen-2 .learn-panel {
+    max-width: 650px;
+    min-height: 88px;
+    margin: 8px auto 0;
+    padding: 8px 14px;
+    gap: 14px;
+  }
+
+  #screen-2 .learn-panel .qr {
+    width: 66px;
+    height: 66px;
+    flex: 0 0 66px;
+  }
+
+  #screen-2 .learn-panel h3 {
+    font-size: 19px;
+    margin-bottom: 3px;
+  }
+
+  #screen-2 .learn-panel p {
+    font-size: 15px;
+  }
+
+  #screen-2 .nav {
+    height: 72px;
+    padding: 0 34px 12px;
+    overflow: hidden;
+  }
+
+  #screen-2 .nav button {
+    min-width: 150px;
+    padding: 12px 20px;
+    font-size: 19px;
   }
 }
 

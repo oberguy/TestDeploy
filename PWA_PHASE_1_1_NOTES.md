@@ -105,3 +105,16 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Enlarged the infographic only on iPad/tablet landscape layouts.
 - Reduced heading and intro spacing to give the image more vertical room.
 - Kept navigation separate and preserved portrait/desktop layouts.
+
+
+## Why Screening Matters image sizing refinement
+- Reduced the iPad landscape image from 96% to 91% maximum width.
+- Slightly reduced the maximum image height for better balance.
+- Preserved all other cumulative fixes.
+
+
+## Screening Tests scrolling refinement
+- Removed horizontal scrolling on iPad landscape.
+- Retained vertical scrolling only as a fallback.
+- Reduced heading, card, QR panel, and navigation spacing to minimize vertical scrolling.
+- Preserved all other cumulative page and kiosk changes.
