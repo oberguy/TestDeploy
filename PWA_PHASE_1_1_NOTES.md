@@ -92,3 +92,16 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Reduces FAQ card height and vertical spacing so the bottom row clears the Previous/Next buttons.
 - Allows the content area to scroll if needed.
 - Leaves portrait and desktop layouts unchanged.
+
+
+## Screening Tests restoration
+- Reapplied the approved narrow QR panel specifically to screen 2.
+- Restored bottom clearance above Previous/Next buttons.
+- Preserved risk-card and FAQ iPad landscape fixes.
+- Updated service-worker cache version.
+
+
+## Why Screening Matters iPad landscape image update
+- Enlarged the infographic only on iPad/tablet landscape layouts.
+- Reduced heading and intro spacing to give the image more vertical room.
+- Kept navigation separate and preserved portrait/desktop layouts.

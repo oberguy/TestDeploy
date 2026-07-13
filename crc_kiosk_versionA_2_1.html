@@ -298,6 +298,97 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   }
 }
 
+
+/* Approved Screening Tests layout - locked to screen 2 */
+#screen-2 .content {
+  padding-bottom: 120px;
+}
+#screen-2 .learn-panel {
+  width: auto;
+  max-width: min(760px, calc(100% - 24px));
+  margin: 14px auto 0;
+  box-sizing: border-box;
+}
+@media (max-width: 900px) {
+  #screen-2 .learn-panel {
+    max-width: min(640px, calc(100% - 20px));
+    padding: 14px 16px;
+  }
+  #screen-2 .learn-panel .qr {
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+  }
+  #screen-2 .learn-panel h3 {
+    font-size: 22px;
+    margin: 0 0 6px;
+  }
+  #screen-2 .learn-panel p {
+    font-size: 16px;
+    margin: 0;
+  }
+}
+@media (max-width: 640px) {
+  #screen-2 .learn-panel {
+    max-width: calc(100% - 16px);
+    margin-top: 10px;
+  }
+}
+@media (orientation: landscape) and (min-width: 1000px) and (max-width: 1366px) and (pointer: coarse) {
+  #screen-2 .content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 110px;
+  }
+  #screen-2 .learn-panel {
+    max-width: 700px;
+  }
+  #screen-2 .nav {
+    flex-shrink: 0;
+    background: var(--bg);
+  }
+}
+
+
+/* Larger Why Screening Matters image on iPad landscape */
+@media (orientation: landscape) and (min-width: 1000px) and (max-width: 1366px) and (pointer: coarse) {
+  #screen-1 .content {
+    padding: 10px 24px 8px;
+    overflow: hidden;
+  }
+
+  #screen-1 h2 {
+    font-size: 34px;
+    margin: 0 0 4px;
+  }
+
+  #screen-1 .why-intro {
+    font-size: 19px;
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+
+  #screen-1 .why-img-wrap {
+    width: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #screen-1 .why-img {
+    width: auto;
+    height: auto;
+    max-width: 96%;
+    max-height: calc(100dvh - 330px);
+    object-fit: contain;
+  }
+
+  #screen-1 .nav {
+    flex-shrink: 0;
+  }
+}
+
 </style>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#062e63">
