@@ -1,5 +1,5 @@
 /* CRC Kiosk Phase 1.1 offline-first service worker */
-const CACHE_VERSION = 'crc-kiosk-v3.0-phase1.1-admin-timeout2';
+const CACHE_VERSION = 'crc-kiosk-v3.0-phase1.1-admin-timeout-wakelock1';
 const PRECACHE_URLS = [
   "./CHANGELOG.md",
   "./PWA_PHASE_1_1_NOTES.md",
@@ -23,7 +23,8 @@ const PRECACHE_URLS = [
   "./offline.html",
   "./pwa-register.js",
   "./screenshots/screenshot-mobile.png",
-  "./screenshots/screenshot-wide.png"
+  "./screenshots/screenshot-wide.png",
+  "./wake-lock.js"
 ];
 const OFFLINE_URL = './offline.html';
 

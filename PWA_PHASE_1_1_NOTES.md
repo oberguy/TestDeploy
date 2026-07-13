@@ -41,3 +41,10 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Explicitly activates the welcome screen after inactivity.
 - Closes the Admin panel and returns the viewport to the top.
 - Bumps the service-worker cache version so installed devices receive the corrected code.
+
+
+## Screen Wake Lock update
+- Added `wake-lock.js` using the Screen Wake Lock API.
+- Reacquires the wake lock when the PWA becomes visible again.
+- Includes user-interaction fallbacks for Safari/iPadOS compatibility.
+- Updated the service-worker cache version and precache list.
