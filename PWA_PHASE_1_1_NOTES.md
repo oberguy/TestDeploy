@@ -62,3 +62,26 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Integrated password validation into the original Admin handler.
 - Preserves statistics refresh and inactivity-timer behavior.
 - Updated the service-worker cache version.
+
+
+## Increased-risk card adjustment
+- Reduced spacing between bullets.
+- Slightly reduced text size and line height within risk-card backs.
+- Enabled vertical scrolling as a fallback so no content is cut off.
+- Updated the service-worker cache version.
+
+
+## Risk card matching update
+- Set Average Risk and Increased Risk cards to the same fixed height.
+- Standardized front/back padding, typography, bullet spacing, and scrolling.
+- Aligned the flip-back instruction consistently at the bottom.
+- Preserved the existing blue/orange visual distinction.
+- Updated the service-worker cache version.
+
+
+## iPad landscape risk-card overlap fix
+- Targets only coarse-pointer iPad/tablet landscape layouts.
+- Reduces vertical spacing and risk-card height on the Who Should Be Screened page.
+- Keeps the Previous/Next navigation in its own non-overlapping area.
+- Allows the page content area to scroll if needed.
+- Leaves portrait and desktop layouts unchanged.

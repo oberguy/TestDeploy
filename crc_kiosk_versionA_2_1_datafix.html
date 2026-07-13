@@ -127,6 +127,120 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   .learn-panel { max-width: calc(100% - 16px); margin-top: 10px; }
 }
 
+
+/* Increased-risk card text fitting fix */
+.flip-card.risk .face.back {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 24px;
+}
+.flip-card.risk .back p {
+  font-size: 18px;
+  line-height: 1.22;
+  margin: 0 0 7px;
+}
+.flip-card.risk .back ul {
+  margin: 0 0 8px;
+  padding-left: 22px;
+}
+.flip-card.risk .back li {
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0 0 4px;
+}
+.flip-card.risk .tap-back {
+  margin-top: 8px;
+  padding-bottom: 2px;
+}
+
+
+/* Match Average Risk and Increased Risk card appearance */
+.card-grid.two {
+  align-items: stretch;
+}
+.flip-card.risk {
+  height: 350px;
+  min-height: 350px;
+}
+.flip-card.risk .flip-inner,
+.flip-card.risk .face {
+  height: 100%;
+}
+.flip-card.risk .face.front,
+.flip-card.risk .face.back {
+  padding: 20px 24px;
+  box-sizing: border-box;
+}
+.flip-card.risk .face.back {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.flip-card.risk .back p,
+.flip-card.risk .back li {
+  font-size: 18px;
+  line-height: 1.2;
+}
+.flip-card.risk .back p {
+  margin: 0 0 7px;
+}
+.flip-card.risk .back ul {
+  margin: 0 0 8px;
+  padding-left: 22px;
+}
+.flip-card.risk .back li {
+  margin: 0 0 4px;
+}
+.flip-card.risk .tap-back {
+  margin-top: auto;
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+
+
+/* iPad landscape overlap fix for Who Should Be Screened */
+@media (orientation: landscape) and (min-width: 1000px) and (max-width: 1366px) and (pointer: coarse) {
+  #screen-3 .content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 36px 12px;
+  }
+
+  #screen-3 h2 {
+    font-size: 36px;
+    margin-bottom: 6px;
+  }
+
+  #screen-3 .subtitle {
+    font-size: 18px !important;
+    line-height: 1.2;
+    margin: 0 0 10px !important;
+  }
+
+  #screen-3 .card-grid.two {
+    margin-top: 6px;
+    gap: 22px;
+  }
+
+  #screen-3 .flip-card.risk {
+    height: 300px;
+    min-height: 300px;
+  }
+
+  #screen-3 .nav {
+    flex-shrink: 0;
+    height: 74px;
+    padding: 0 36px 14px;
+    background: var(--bg);
+  }
+
+  #screen-3 .nav button {
+    padding: 13px 22px;
+    font-size: 20px;
+  }
+}
+
 </style>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#062e63">
