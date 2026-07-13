@@ -29,3 +29,15 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Engagement sessions now use IndexedDB with migration/fallback from localStorage.
 - Admin panel displays started, completed, incomplete, and most recent session statistics.
 - CSV export uses the iOS/iPadOS Share Sheet when supported.
+
+## Inactivity reset update
+- 60 seconds of inactivity triggers a 10-second warning.
+- Continue Session resumes the active session.
+- Return Now or countdown expiration saves the incomplete session and returns to the welcome screen.
+- Completed engagement records remain intact.
+- The timer is paused while the Admin panel is open.
+
+## Timeout reset fix
+- Explicitly activates the welcome screen after inactivity.
+- Closes the Admin panel and returns the viewport to the top.
+- Bumps the service-worker cache version so installed devices receive the corrected code.
