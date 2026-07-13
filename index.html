@@ -241,6 +241,63 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   }
 }
 
+
+/* iPad landscape overlap fix for Common Questions */
+@media (orientation: landscape) and (min-width: 1000px) and (max-width: 1366px) and (pointer: coarse) {
+  #screen-4 .content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 36px 12px;
+  }
+
+  #screen-4 h2 {
+    font-size: 36px;
+    margin-bottom: 6px;
+  }
+
+  #screen-4 .subtitle {
+    font-size: 18px !important;
+    line-height: 1.2;
+    margin: 0 0 10px !important;
+  }
+
+  #screen-4 .card-grid.six {
+    margin-top: 6px;
+    gap: 16px;
+  }
+
+  #screen-4 .flip-card.faq {
+    height: 230px;
+    min-height: 230px;
+  }
+
+  #screen-4 .face {
+    padding: 18px;
+  }
+
+  #screen-4 .card-title {
+    font-size: 21px;
+  }
+
+  #screen-4 .card-front-text,
+  #screen-4 .back p {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  #screen-4 .nav {
+    flex-shrink: 0;
+    height: 74px;
+    padding: 0 36px 14px;
+    background: var(--bg);
+  }
+
+  #screen-4 .nav button {
+    padding: 13px 22px;
+    font-size: 20px;
+  }
+}
+
 </style>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#062e63">

@@ -85,3 +85,10 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Keeps the Previous/Next navigation in its own non-overlapping area.
 - Allows the page content area to scroll if needed.
 - Leaves portrait and desktop layouts unchanged.
+
+
+## iPad landscape FAQ-card overlap fix
+- Targets only coarse-pointer iPad/tablet landscape layouts on the Common Questions page.
+- Reduces FAQ card height and vertical spacing so the bottom row clears the Previous/Next buttons.
+- Allows the content area to scroll if needed.
+- Leaves portrait and desktop layouts unchanged.

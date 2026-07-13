@@ -1,5 +1,5 @@
 /* CRC Kiosk Phase 1.1 offline-first service worker */
-const CACHE_VERSION = 'crc-kiosk-risk-cards-ipad-landscape-fix1';
+const CACHE_VERSION = 'crc-kiosk-faq-ipad-landscape-fix1';
 const PRECACHE_URLS = [
   "./CHANGELOG.md",
   "./PWA_PHASE_1_1_NOTES.md",
