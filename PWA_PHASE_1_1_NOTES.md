@@ -23,3 +23,9 @@ After deployment, visit the app once while online, then test offline by disablin
 
 
 Update: Added manifest screenshots for richer PWA install UI on desktop and mobile.
+
+
+## Admin tracking update
+- Engagement sessions now use IndexedDB with migration/fallback from localStorage.
+- Admin panel displays started, completed, incomplete, and most recent session statistics.
+- CSV export uses the iOS/iPadOS Share Sheet when supported.

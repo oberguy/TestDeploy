@@ -88,6 +88,12 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
 .admin-panel { display:none; position:fixed; right:12px; bottom:48px; background:#fff; border:1px solid #ccd9e6; border-radius:14px; padding:12px; box-shadow:var(--shadow); z-index:101; width:260px; }
 .admin-panel.show { display:block; }
 .admin-panel button { width:100%; margin:5px 0; padding:10px; border-radius:10px; border:0; background:var(--navy); color:#fff; font-weight:800; }
+.admin-stats { margin:10px 0; border:1px solid #d8e2ec; border-radius:10px; overflow:hidden; font-size:13px; }
+.admin-stats div { display:flex; justify-content:space-between; gap:10px; padding:8px 9px; border-bottom:1px solid #e7edf3; }
+.admin-stats div:last-child { border-bottom:0; }
+.admin-stats strong { text-align:right; overflow-wrap:anywhere; }
+.admin-message { min-height:18px; margin:6px 0; color:#315b45; font-size:12px; font-weight:700; }
+
 @media (max-width:1000px) {
  .subtitle { white-space:normal; }
  .card-grid.three,.card-grid.six,.resource-row { grid-template-columns:1fr; }
@@ -189,7 +195,18 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   </section>
 </div>
 <div class="admin"><button type="button" id="adminBtn">Admin</button></div>
-<div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><button type="button" id="downloadCsvBtn">Download engagement CSV</button><button type="button" id="clearDataBtn">Clear local data</button></div>
+<div class="admin-panel" id="adminPanel">
+  <div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div>
+  <div class="admin-stats" id="adminStats" aria-live="polite">
+    <div><span>Total sessions started</span><strong id="statStarted">0</strong></div>
+    <div><span>Completed sessions</span><strong id="statCompleted">0</strong></div>
+    <div><span>Incomplete sessions</span><strong id="statIncomplete">0</strong></div>
+    <div><span>Most recent session</span><strong id="statRecent">None</strong></div>
+  </div>
+  <div class="admin-message" id="adminMessage" aria-live="polite"></div>
+  <button type="button" id="downloadCsvBtn">Export engagement CSV</button>
+  <button type="button" id="clearDataBtn">Clear local data</button>
+</div>
 <script>
 (function() {
   'use strict';
@@ -197,20 +214,98 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   var currentScreen = 0;
   var currentSession = null;
   var storageKey = 'crc_kiosk_vA21_sessions';
+  var dbName = 'crc_kiosk_engagement_db';
+  var storeName = 'sessions';
+  var dbVersion = 1;
   var progressLabels = ['Why Screening Matters','Screening Tests','Who Should Be Screened?','Common Questions','Resources'];
+  var dbPromise = openDatabase();
 
   function makeId() {
     return 's_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
   }
+  function openDatabase() {
+    return new Promise(function(resolve) {
+      if (!('indexedDB' in window)) { resolve(null); return; }
+      var request;
+      try { request = indexedDB.open(dbName, dbVersion); } catch (e) { resolve(null); return; }
+      request.onupgradeneeded = function(event) {
+        var db = event.target.result;
+        if (!db.objectStoreNames.contains(storeName)) db.createObjectStore(storeName, {keyPath:'session_id'});
+      };
+      request.onsuccess = function() {
+        var db = request.result;
+        db.onversionchange = function() { db.close(); };
+        migrateLegacySessions(db).then(function() { resolve(db); });
+      };
+      request.onerror = function() { resolve(null); };
+      request.onblocked = function() { resolve(null); };
+    });
+  }
+  function legacySessions() {
+    try {
+      var parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) { return []; }
+  }
+  function migrateLegacySessions(db) {
+    var legacy = legacySessions();
+    if (!db || !legacy.length) return Promise.resolve();
+    return new Promise(function(resolve) {
+      var tx = db.transaction(storeName, 'readwrite');
+      var store = tx.objectStore(storeName);
+      legacy.forEach(function(session) { if (session && session.session_id) store.put(session); });
+      tx.oncomplete = function() {
+        try { localStorage.removeItem(storageKey); } catch (e) {}
+        resolve();
+      };
+      tx.onerror = tx.onabort = function() { resolve(); };
+    });
+  }
   function getSessions() {
-    try { return JSON.parse(localStorage.getItem(storageKey) || '[]'); } catch(e) { return []; }
+    return dbPromise.then(function(db) {
+      if (!db) return legacySessions();
+      return new Promise(function(resolve) {
+        var tx = db.transaction(storeName, 'readonly');
+        var request = tx.objectStore(storeName).getAll();
+        request.onsuccess = function() { resolve(request.result || []); };
+        request.onerror = function() { resolve(legacySessions()); };
+      });
+    });
+  }
+  function putSession(session) {
+    if (!session) return Promise.resolve();
+    var snapshot = JSON.parse(JSON.stringify(session));
+    return dbPromise.then(function(db) {
+      if (!db) {
+        var sessions = legacySessions();
+        var idx = sessions.findIndex(function(s) { return s.session_id === snapshot.session_id; });
+        if (idx >= 0) sessions[idx] = snapshot; else sessions.push(snapshot);
+        try { localStorage.setItem(storageKey, JSON.stringify(sessions)); } catch (e) {}
+        return;
+      }
+      return new Promise(function(resolve) {
+        var tx = db.transaction(storeName, 'readwrite');
+        tx.objectStore(storeName).put(snapshot);
+        tx.oncomplete = function() { resolve(); };
+        tx.onerror = tx.onabort = function() { resolve(); };
+      });
+    });
   }
   function saveSession() {
-    if (!currentSession) return;
-    var sessions = getSessions();
-    var idx = sessions.findIndex(function(s) { return s.session_id === currentSession.session_id; });
-    if (idx >= 0) sessions[idx] = currentSession; else sessions.push(currentSession);
-    localStorage.setItem(storageKey, JSON.stringify(sessions));
+    if (!currentSession) return Promise.resolve();
+    return putSession(currentSession).then(renderAdminStats);
+  }
+  function clearSessions() {
+    return dbPromise.then(function(db) {
+      try { localStorage.removeItem(storageKey); } catch (e) {}
+      if (!db) return;
+      return new Promise(function(resolve) {
+        var tx = db.transaction(storeName, 'readwrite');
+        tx.objectStore(storeName).clear();
+        tx.oncomplete = function() { resolve(); };
+        tx.onerror = tx.onabort = function() { resolve(); };
+      });
+    });
   }
   function startSession() {
     currentSession = { session_id: makeId(), start_time: new Date().toISOString(), end_time: '', duration_seconds: 0, screens_viewed: ['Welcome'], completed: false, card_flips: {} };
@@ -255,23 +350,56 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
     v = String(v == null ? '' : v);
     return '"' + v.replace(/"/g, '""') + '"';
   }
+  function setAdminMessage(text) {
+    var el = document.getElementById('adminMessage');
+    if (el) el.textContent = text || '';
+  }
+  function renderAdminStats() {
+    return getSessions().then(function(sessions) {
+      sessions.sort(function(a,b) { return String(b.start_time || '').localeCompare(String(a.start_time || '')); });
+      var completed = sessions.filter(function(s) { return !!s.completed; }).length;
+      var startedEl = document.getElementById('statStarted');
+      var completedEl = document.getElementById('statCompleted');
+      var incompleteEl = document.getElementById('statIncomplete');
+      var recentEl = document.getElementById('statRecent');
+      if (startedEl) startedEl.textContent = sessions.length;
+      if (completedEl) completedEl.textContent = completed;
+      if (incompleteEl) incompleteEl.textContent = sessions.length - completed;
+      if (recentEl) recentEl.textContent = sessions.length && sessions[0].start_time ? new Date(sessions[0].start_time).toLocaleString() : 'None';
+      return sessions;
+    });
+  }
   function downloadCsv() {
     if (currentSession) {
       currentSession.end_time = new Date().toISOString();
       currentSession.duration_seconds = Math.round((new Date(currentSession.end_time) - new Date(currentSession.start_time)) / 1000);
-      saveSession();
     }
-    var sessions = getSessions();
-    var rows = [['session_id','start_time','end_time','duration_seconds','screens_viewed','completed','card_flips_json']];
-    sessions.forEach(function(s) { rows.push([s.session_id, s.start_time, s.end_time, s.duration_seconds, (s.screens_viewed || []).join(' > '), s.completed ? 'yes':'no', JSON.stringify(s.card_flips || {})]); });
-    var csv = rows.map(function(r) { return r.map(csvEscape).join(','); }).join('\\n');
-    var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a'); a.href = url; a.download = 'crc_kiosk_engagement.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    return saveSession().then(getSessions).then(function(sessions) {
+      var rows = [['session_id','start_time','end_time','duration_seconds','screens_viewed','completed','card_flips_json']];
+      sessions.forEach(function(s) { rows.push([s.session_id, s.start_time, s.end_time, s.duration_seconds, (s.screens_viewed || []).join(' > '), s.completed ? 'yes':'no', JSON.stringify(s.card_flips || {})]); });
+      var csv = '\ufeff' + rows.map(function(r) { return r.map(csvEscape).join(','); }).join('\r\n');
+      var fileName = 'crc_kiosk_engagement_' + new Date().toISOString().slice(0,10) + '.csv';
+      var file = new File([csv], fileName, {type:'text/csv;charset=utf-8;'});
+      if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
+        return navigator.share({title:'CRC Kiosk engagement data', files:[file]}).then(function() { setAdminMessage('Export opened in the Share Sheet.'); }).catch(function(err) {
+          if (err && err.name !== 'AbortError') fallbackDownload(file, fileName);
+        });
+      }
+      fallbackDownload(file, fileName);
+    });
+  }
+  function fallbackDownload(file, fileName) {
+    var url = URL.createObjectURL(file);
+    var a = document.createElement('a');
+    a.href = url; a.download = fileName; a.target = '_blank';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 30000);
+    setAdminMessage('CSV export created. Check Downloads or the opened browser tab.');
   }
 
   document.addEventListener('DOMContentLoaded', function() {
     renderProgress();
+    renderAdminStats();
     var startBtn = document.getElementById('startBtn');
     if (startBtn) startBtn.addEventListener('click', function() { startSession(); showScreen(1); });
     document.querySelectorAll('[data-go]').forEach(function(btn) { btn.addEventListener('click', function() { showScreen(parseInt(btn.getAttribute('data-go'),10)); }); });
@@ -279,9 +407,13 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
     if (restartBtn) restartBtn.addEventListener('click', function() { if (currentSession) { currentSession.end_time = new Date().toISOString(); saveSession(); } currentSession = null; document.querySelectorAll('.flip-card.flipped').forEach(function(c){c.classList.remove('flipped');}); showScreen(0); });
     document.querySelectorAll('.flip-card').forEach(function(card) { card.addEventListener('click', function() { card.classList.toggle('flipped'); if (card.classList.contains('flipped')) recordFlip(card.getAttribute('data-card')); }); });
     var adminBtn = document.getElementById('adminBtn'), adminPanel = document.getElementById('adminPanel');
-    if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() { adminPanel.classList.toggle('show'); });
+    if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() { adminPanel.classList.toggle('show'); if (adminPanel.classList.contains('show')) renderAdminStats(); });
     var dl = document.getElementById('downloadCsvBtn'); if (dl) dl.addEventListener('click', downloadCsv);
-    var cl = document.getElementById('clearDataBtn'); if (cl) cl.addEventListener('click', function() { if (confirm('Clear local engagement data on this device?')) { localStorage.removeItem(storageKey); currentSession = null; } });
+    var cl = document.getElementById('clearDataBtn'); if (cl) cl.addEventListener('click', function() {
+      if (confirm('Clear local engagement data on this device?')) {
+        clearSessions().then(function() { currentSession = null; setAdminMessage('Local engagement data cleared.'); renderAdminStats(); });
+      }
+    });
   });
 })();
 </script>

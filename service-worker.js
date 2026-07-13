@@ -1,5 +1,5 @@
 /* CRC Kiosk Phase 1.1 offline-first service worker */
-const CACHE_VERSION = 'crc-kiosk-c0ee335aa53a';
+const CACHE_VERSION = 'crc-kiosk-v3.0-phase1.1-admin1';
 const PRECACHE_URLS = [
   "./CHANGELOG.md",
   "./PWA_PHASE_1_1_NOTES.md",
