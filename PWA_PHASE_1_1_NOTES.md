@@ -54,3 +54,11 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Reverted the tablet-specific portrait and landscape responsive layout changes.
 - Preserved offline caching, Admin tracking, IndexedDB support, inactivity timeout, reset fix, and Screen Wake Lock.
 - Updated the service-worker cache version so installed devices receive the rollback.
+
+
+## Admin password correction
+- Corrected the password handler to target `#adminBtn`.
+- Uses the panel's existing `show` class rather than the nonexistent `open` class.
+- Integrated password validation into the original Admin handler.
+- Preserves statistics refresh and inactivity-timer behavior.
+- Updated the service-worker cache version.

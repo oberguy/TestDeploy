@@ -516,7 +516,26 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
     if (restartBtn) restartBtn.addEventListener('click', function() { if (currentSession) { currentSession.end_time = new Date().toISOString(); saveSession(); } currentSession = null; document.querySelectorAll('.flip-card.flipped').forEach(function(c){c.classList.remove('flipped');}); showScreen(0); });
     document.querySelectorAll('.flip-card').forEach(function(card) { card.addEventListener('click', function() { card.classList.toggle('flipped'); if (card.classList.contains('flipped')) recordFlip(card.getAttribute('data-card')); }); });
     var adminBtn = document.getElementById('adminBtn'), adminPanel = document.getElementById('adminPanel');
-    if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() { adminPanel.classList.toggle('show'); if (adminPanel.classList.contains('show')) { clearInactivityTimers(); hideTimeoutWarning(); renderAdminStats(); } else { scheduleInactivityTimer(); } });
+    if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() {
+      if (adminPanel.classList.contains('show')) {
+        adminPanel.classList.remove('show');
+        scheduleInactivityTimer();
+        return;
+      }
+
+      var enteredPassword = window.prompt('Enter Admin Password');
+      if (enteredPassword === null) return;
+
+      if (enteredPassword !== '1026') {
+        window.alert('Incorrect password.');
+        return;
+      }
+
+      adminPanel.classList.add('show');
+      clearInactivityTimers();
+      hideTimeoutWarning();
+      renderAdminStats();
+    });
 
     var continueBtn = document.getElementById('continueSessionBtn');
     if (continueBtn) continueBtn.addEventListener('click', function() { hideTimeoutWarning(); scheduleInactivityTimer(); });
@@ -536,30 +555,6 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
 </script>
 <script src="./wake-lock.js" defer></script>
 <script src="./pwa-register.js" defer></script>
-
-<script>
-(function(){
-const ADMIN_PASSWORD="1026";
-document.addEventListener('DOMContentLoaded',()=>{
-  const btn=document.querySelector('.admin');
-  const panel=document.querySelector('.admin-panel');
-  if(!btn||!panel)return;
-  const orig=btn.onclick;
-  btn.onclick=null;
-  btn.addEventListener('click',function(e){
-    e.stopPropagation();
-    if(panel.classList.contains('open')){panel.classList.remove('open');return;}
-    const p=prompt('Enter Admin Password');
-    if(p===null)return;
-    if(p===ADMIN_PASSWORD){
-      panel.classList.add('open');
-    }else{
-      alert('Incorrect password.');
-    }
-  },true);
-});
-})();
-</script>
 
 </body>
 </html>
