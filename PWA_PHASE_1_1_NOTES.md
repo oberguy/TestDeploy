@@ -163,3 +163,14 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Added Enter and Space keyboard activation.
 - Added a strong visible keyboard-focus outline.
 - Updated the service-worker cache version.
+
+
+## Accessibility pass v3
+- Improved descriptive alternative text for informative images and QR codes.
+- Marked decorative ribbon and card icons as hidden from assistive technologies.
+- Replaced the browser password prompt with an accessible modal dialog and numeric password field.
+- Added keyboard focus trapping, Escape-to-cancel, error announcements, and focus restoration for the Admin dialog.
+- Added live page announcements such as “Page 3 of 6.”
+- Ensured inactive screens and hidden card faces are hidden from screen readers.
+- Improved flip-card announcements while preserving focus on the activated card.
+- Updated the service-worker cache version.
