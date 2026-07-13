@@ -174,3 +174,7 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Ensured inactive screens and hidden card faces are hidden from screen readers.
 - Improved flip-card announcements while preserving focus on the activated card.
 - Updated the service-worker cache version.
+
+
+## WCAG 2.1 AA final pass
+See `WCAG_2_1_AA_AUDIT.md` for corrections and remaining manual verification.
