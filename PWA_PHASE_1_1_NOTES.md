@@ -48,3 +48,12 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Reacquires the wake lock when the PWA becomes visible again.
 - Includes user-interaction fallbacks for Safari/iPadOS compatibility.
 - Updated the service-worker cache version and precache list.
+
+
+## iPad responsive update
+- Added iPad portrait and landscape layout rules.
+- Uses dynamic viewport units and iOS safe-area insets.
+- Uses two-column card layouts on tablets rather than collapsing everything to one column.
+- Allows long card backs and the Admin panel to scroll instead of clipping content.
+- Reduces oversized desktop typography and navigation controls on iPad.
+- Updated the service-worker cache version.
