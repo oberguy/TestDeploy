@@ -50,10 +50,7 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Updated the service-worker cache version and precache list.
 
 
-## iPad responsive update
-- Added iPad portrait and landscape layout rules.
-- Uses dynamic viewport units and iOS safe-area insets.
-- Uses two-column card layouts on tablets rather than collapsing everything to one column.
-- Allows long card backs and the Admin panel to scroll instead of clipping content.
-- Reduces oversized desktop typography and navigation controls on iPad.
-- Updated the service-worker cache version.
+## iPad layout rollback
+- Reverted the tablet-specific portrait and landscape responsive layout changes.
+- Preserved offline caching, Admin tracking, IndexedDB support, inactivity timeout, reset fix, and Screen Wake Lock.
+- Updated the service-worker cache version so installed devices receive the rollback.
