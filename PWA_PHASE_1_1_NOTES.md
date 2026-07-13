@@ -133,3 +133,10 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Kept horizontal scrolling disabled.
 - Tightened page spacing so the larger elements still clear the standardized navigation buttons.
 - Vertical scrolling remains only as a fallback.
+
+
+## Page navigation scroll reset
+- Every page now starts at the top when opened using Previous or Next.
+- Resets the window, page content area, and horizontal progress area.
+- Preserves all current layout, Admin, timeout, Wake Lock, and offline changes.
+- Updated the service-worker cache version.
