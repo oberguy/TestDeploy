@@ -140,3 +140,18 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Resets the window, page content area, and horizontal progress area.
 - Preserves all current layout, Admin, timeout, Wake Lock, and offline changes.
 - Updated the service-worker cache version.
+
+
+## Screening Tests text-size adjustment
+- Increased the card-front text size slightly.
+- Increased the card-back paragraph and bullet text slightly.
+- Used a smaller increase on iPad landscape to preserve fit above navigation.
+- Updated the service-worker cache version.
+
+
+## Screening Tests iPad-landscape text increase
+- Increased card titles to 27px.
+- Increased card-front text to 20px.
+- Increased card-back text and bullets to 18px.
+- Increased QR-panel text slightly.
+- Preserved current card heights and navigation clearance.
