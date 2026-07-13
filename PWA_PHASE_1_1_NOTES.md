@@ -118,3 +118,10 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Retained vertical scrolling only as a fallback.
 - Reduced heading, card, QR panel, and navigation spacing to minimize vertical scrolling.
 - Preserved all other cumulative page and kiosk changes.
+
+
+## Navigation-button consistency
+- Standardized Previous/Next navigation buttons across all content pages.
+- Matches the Common Questions page: 190px minimum width, 20px text, and 13px × 22px padding.
+- Start, Restart, and Admin controls remain otherwise unchanged.
+- Updated the service-worker cache version.
