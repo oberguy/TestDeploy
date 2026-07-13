@@ -125,3 +125,11 @@ Update: Added manifest screenshots for richer PWA install UI on desktop and mobi
 - Matches the Common Questions page: 190px minimum width, 20px text, and 13px × 22px padding.
 - Start, Restart, and Admin controls remain otherwise unchanged.
 - Updated the service-worker cache version.
+
+
+## Screening Tests iPad-landscape size adjustment
+- Increased the three screening-test cards from 245px to 260px high.
+- Increased the QR panel, QR code, title, and internal spacing slightly.
+- Kept horizontal scrolling disabled.
+- Tightened page spacing so the larger elements still clear the standardized navigation buttons.
+- Vertical scrolling remains only as a fallback.

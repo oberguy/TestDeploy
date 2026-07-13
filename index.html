@@ -508,6 +508,113 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
   box-sizing: border-box;
 }
 
+
+/* Screening Tests slightly larger iPad-landscape cards */
+@media (orientation: landscape) and (min-width: 1000px) and (max-width: 1366px) and (pointer: coarse) {
+  #screen-2 {
+    overflow: hidden;
+  }
+
+  #screen-2 .content {
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 28px 78px;
+  }
+
+  #screen-2 h2 {
+    font-size: 33px;
+    margin: 0 0 3px;
+  }
+
+  #screen-2 .subtitle {
+    font-size: 16.5px !important;
+    line-height: 1.12;
+    margin: 0 0 5px !important;
+  }
+
+  #screen-2 .card-grid.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 3px;
+    min-width: 0;
+  }
+
+  #screen-2 .card-grid.three .flip-card {
+    min-width: 0;
+    min-height: 260px;
+    height: 260px;
+  }
+
+  #screen-2 .face {
+    padding: 19px;
+  }
+
+  #screen-2 .icon {
+    font-size: 47px;
+    margin-bottom: 7px;
+  }
+
+  #screen-2 .card-title {
+    font-size: 25px;
+    margin-bottom: 6px;
+  }
+
+  #screen-2 .card-front-text {
+    font-size: 17px;
+    line-height: 1.18;
+  }
+
+  #screen-2 .card-grid.three .face.back {
+    padding: 17px 19px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #screen-2 .card-grid.three .back p,
+  #screen-2 .card-grid.three .back li {
+    font-size: 16px;
+    line-height: 1.17;
+    margin-bottom: 5px;
+  }
+
+  #screen-2 .learn-panel {
+    max-width: 700px;
+    min-height: 98px;
+    margin: 7px auto 0;
+    padding: 10px 16px;
+    gap: 15px;
+  }
+
+  #screen-2 .learn-panel .qr {
+    width: 74px;
+    height: 74px;
+    flex: 0 0 74px;
+  }
+
+  #screen-2 .learn-panel h3 {
+    font-size: 20px;
+    margin-bottom: 3px;
+  }
+
+  #screen-2 .learn-panel p {
+    font-size: 15.5px;
+  }
+
+  #screen-2 .nav {
+    height: 72px;
+    padding: 0 34px 12px;
+    overflow: hidden;
+  }
+
+  #screen-2 .nav button {
+    min-width: 190px;
+    padding: 13px 22px;
+    font-size: 20px;
+  }
+}
+
 </style>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#062e63">
