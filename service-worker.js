@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.8-stability';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.9-ipad-update';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,7 +9,18 @@ const APP_SHELL = [
 ];
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.all(APP_SHELL.map(url =>
+        fetch(url, { cache: 'reload' })
+          .then(response => {
+            if (!response.ok) throw new Error('Unable to cache ' + url);
+            return cache.put(url, response);
+          })
+      ))
+    )
+  );
 });
 
 self.addEventListener('activate', event => {
@@ -29,7 +40,7 @@ self.addEventListener('fetch', event => {
 
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: 'no-store' })
         .then(response => {
           if (response && response.ok) {
             const copy = response.clone();
@@ -43,15 +54,14 @@ self.addEventListener('fetch', event => {
   }
 
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      const network = fetch(event.request).then(response => {
+    fetch(event.request, { cache: 'no-store' })
+      .then(response => {
         if (response && response.ok && response.type !== 'opaque') {
           const copy = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
         }
         return response;
-      });
-      return cached || network;
-    }).catch(() => Response.error())
+      })
+      .catch(() => caches.match(event.request))
   );
 });

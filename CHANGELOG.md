@@ -1,3 +1,12 @@
+# PWA iPad Update Reliability - v1.0.9
+
+- Disabled service-worker HTTP cache reuse with `updateViaCache: 'none'`.
+- Added immediate `skipWaiting()` activation for newly installed service workers.
+- Added cache-bypassing network requests for online app updates.
+- Added update checks at startup, foreground return, page restore, reconnection, and every five minutes while visible.
+- Added a versioned reload URL after the service-worker controller changes.
+- Retained offline fallback and automatic deletion of old caches.
+
 # Change Log
 
 ## Version 1.0 Release Candidate
