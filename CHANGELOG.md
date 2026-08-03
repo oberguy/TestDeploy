@@ -22,3 +22,9 @@
 - Prevented the Admin panel from opening after an incorrect or cancelled password entry.
 - Corrected the authentication flow so the panel opens immediately after a valid password.
 - Preserved inactivity-timer pausing while the authenticated Admin panel is open.
+
+## Engagement Tracking Update
+- Added summary metrics for sessions started, completed, incomplete, and last session date/time.
+- Added automatic migration of existing localStorage session records.
+- Added IndexedDB persistence with localStorage fallback.
+- Preserved existing CSV export and completed-session data.

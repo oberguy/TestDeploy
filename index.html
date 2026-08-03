@@ -338,7 +338,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 </div><div class="nav"><button data-go="5">← Previous</button><button class="next" id="restartBtn">Start Over</button></div></section>
 </div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
-<div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
+<div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 
 <div class="session-timeout-overlay" id="sessionTimeoutOverlay" role="dialog" aria-modal="true" aria-labelledby="sessionTimeoutTitle" aria-describedby="sessionTimeoutText">
   <div class="session-timeout-dialog">
@@ -368,18 +368,105 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var adminPaused = false;
   var adminPassword = '1026';
 
+  var dbName = 'crc_kiosk_engagement';
+  var dbVersion = 1;
+  var storeName = 'sessions';
+  var sessionsCache = [];
+  var db = null;
+  var storageReady = initializeStorage();
+
   function makeId() {
     return 's_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
   }
-  function getSessions() {
-    try { return JSON.parse(localStorage.getItem(storageKey) || '[]'); } catch(e) { return []; }
+  function readLegacySessions() {
+    try {
+      var parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch(e) { return []; }
+  }
+  function normalizeSession(session) {
+    var s = session || {};
+    return {
+      session_id: s.session_id || makeId(),
+      start_time: s.start_time || new Date().toISOString(),
+      end_time: s.end_time || '',
+      duration_seconds: Number(s.duration_seconds || 0),
+      screens_viewed: Array.isArray(s.screens_viewed) ? s.screens_viewed : ['Welcome'],
+      completed: s.completed === true || s.completed === 'yes',
+      card_flips: s.card_flips && typeof s.card_flips === 'object' ? s.card_flips : {}
+    };
+  }
+  function openDatabase() {
+    return new Promise(function(resolve, reject) {
+      if (!('indexedDB' in window)) return reject(new Error('IndexedDB unavailable'));
+      var request = indexedDB.open(dbName, dbVersion);
+      request.onupgradeneeded = function() {
+        var database = request.result;
+        if (!database.objectStoreNames.contains(storeName)) database.createObjectStore(storeName, {keyPath:'session_id'});
+      };
+      request.onsuccess = function() { resolve(request.result); };
+      request.onerror = function() { reject(request.error || new Error('IndexedDB open failed')); };
+    });
+  }
+  function idbGetAll() {
+    return new Promise(function(resolve, reject) {
+      var request = db.transaction(storeName, 'readonly').objectStore(storeName).getAll();
+      request.onsuccess = function() { resolve((request.result || []).map(normalizeSession)); };
+      request.onerror = function() { reject(request.error); };
+    });
+  }
+  function idbPut(session) {
+    return new Promise(function(resolve, reject) {
+      var request = db.transaction(storeName, 'readwrite').objectStore(storeName).put(normalizeSession(session));
+      request.onsuccess = function() { resolve(); };
+      request.onerror = function() { reject(request.error); };
+    });
+  }
+  function idbDelete(id) {
+    return new Promise(function(resolve, reject) {
+      var request = db.transaction(storeName, 'readwrite').objectStore(storeName).delete(id);
+      request.onsuccess = function() { resolve(); };
+      request.onerror = function() { reject(request.error); };
+    });
+  }
+  function idbClear() {
+    return new Promise(function(resolve, reject) {
+      var request = db.transaction(storeName, 'readwrite').objectStore(storeName).clear();
+      request.onsuccess = function() { resolve(); };
+      request.onerror = function() { reject(request.error); };
+    });
+  }
+  function saveFallback() {
+    try { localStorage.setItem(storageKey, JSON.stringify(sessionsCache)); } catch(e) {}
+  }
+  async function initializeStorage() {
+    var legacy = readLegacySessions().map(normalizeSession);
+    try {
+      db = await openDatabase();
+      var stored = await idbGetAll();
+      var merged = {};
+      stored.concat(legacy).forEach(function(session) { merged[session.session_id] = normalizeSession(session); });
+      sessionsCache = Object.keys(merged).map(function(id) { return merged[id]; });
+      for (var i=0; i<sessionsCache.length; i++) await idbPut(sessionsCache[i]);
+      saveFallback();
+    } catch(e) {
+      db = null;
+      sessionsCache = legacy;
+    }
+    updateEngagementSummary();
+  }
+  function getSessions() { return sessionsCache.slice(); }
+  async function persistSession(session) {
+    session = normalizeSession(session);
+    var idx = sessionsCache.findIndex(function(s) { return s.session_id === session.session_id; });
+    if (idx >= 0) sessionsCache[idx] = session; else sessionsCache.push(session);
+    saveFallback();
+    if (db) { try { await idbPut(session); } catch(e) { db = null; } }
+    updateEngagementSummary();
   }
   function saveSession() {
     if (!currentSession) return;
-    var sessions = getSessions();
-    var idx = sessions.findIndex(function(s) { return s.session_id === currentSession.session_id; });
-    if (idx >= 0) sessions[idx] = currentSession; else sessions.push(currentSession);
-    localStorage.setItem(storageKey, JSON.stringify(sessions));
+    persistSession(currentSession);
   }
   function startSession() {
     currentSession = { session_id: makeId(), start_time: new Date().toISOString(), end_time: '', duration_seconds: 0, screens_viewed: ['Welcome'], completed: false, card_flips: {} };
@@ -402,13 +489,24 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     currentSession.duration_seconds = Math.round((new Date(currentSession.end_time) - new Date(currentSession.start_time)) / 1000);
     saveSession();
   }
-
-  function removeActiveSession() {
+  function updateEngagementSummary() {
+    var summary = document.getElementById('engagementSummary');
+    if (!summary) return;
+    var sessions = getSessions();
+    var completed = sessions.filter(function(s) { return s.completed; }).length;
+    var incomplete = sessions.length - completed;
+    var dated = sessions.filter(function(s) { return s.start_time; }).sort(function(a,b) { return new Date(b.start_time) - new Date(a.start_time); });
+    var last = dated.length ? new Date(dated[0].start_time).toLocaleString() : 'None';
+    summary.innerHTML = '<strong>Sessions started:</strong> ' + sessions.length + '<br><strong>Sessions completed:</strong> ' + completed + '<br><strong>Incomplete sessions:</strong> ' + incomplete + '<br><strong>Last session:</strong> ' + last;
+  }
+  async function removeActiveSession() {
     if (!currentSession) return;
     var activeId = currentSession.session_id;
-    var sessions = getSessions().filter(function(s) { return s.session_id !== activeId; });
-    localStorage.setItem(storageKey, JSON.stringify(sessions));
+    sessionsCache = sessionsCache.filter(function(s) { return s.session_id !== activeId; });
+    saveFallback();
+    if (db) { try { await idbDelete(activeId); } catch(e) { db = null; } }
     currentSession = null;
+    updateEngagementSummary();
   }
   function hideTimeoutWarning() {
     var overlay = document.getElementById('sessionTimeoutOverlay');
@@ -419,10 +517,10 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     document.querySelectorAll('.flip-card.flipped').forEach(function(c){ c.classList.remove('flipped'); });
     showScreen(0);
   }
-  function timeoutSession() {
+  async function timeoutSession() {
     clearInactivityTimers();
     hideTimeoutWarning();
-    removeActiveSession();
+    await removeActiveSession();
     resetKioskView();
   }
   function showTimeoutWarning() {
@@ -488,8 +586,9 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
   document.addEventListener('DOMContentLoaded', function() {
     renderProgress();
+    storageReady.then(updateEngagementSummary);
     var startBtn = document.getElementById('startBtn');
-    if (startBtn) startBtn.addEventListener('click', function() { startSession(); showScreen(1); resetInactivityTimer(); });
+    if (startBtn) startBtn.addEventListener('click', async function() { await storageReady; startSession(); showScreen(1); resetInactivityTimer(); });
     document.querySelectorAll('[data-go]').forEach(function(btn) { btn.addEventListener('click', function() { showScreen(parseInt(btn.getAttribute('data-go'),10)); }); });
     var restartBtn = document.getElementById('restartBtn');
     if (restartBtn) restartBtn.addEventListener('click', function() { clearInactivityTimers(); hideTimeoutWarning(); if (currentSession) { currentSession.end_time = new Date().toISOString(); saveSession(); } currentSession = null; document.querySelectorAll('.flip-card.flipped').forEach(function(c){c.classList.remove('flipped');}); showScreen(0); });
@@ -511,12 +610,13 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
       }
 
       adminPanel.classList.add('show');
+      updateEngagementSummary();
       adminPaused = true;
       clearInactivityTimers();
       hideTimeoutWarning();
     });
     var dl = document.getElementById('downloadCsvBtn'); if (dl) dl.addEventListener('click', downloadCsv);
-    var cl = document.getElementById('clearDataBtn'); if (cl) cl.addEventListener('click', function() { if (confirm('Clear local engagement data on this device?')) { localStorage.removeItem(storageKey); currentSession = null; } });
+    var cl = document.getElementById('clearDataBtn'); if (cl) cl.addEventListener('click', async function() { if (confirm('Clear local engagement data on this device?')) { await storageReady; sessionsCache = []; currentSession = null; localStorage.removeItem(storageKey); if (db) { try { await idbClear(); } catch(e) { db = null; } } updateEngagementSummary(); } });
     var continueBtn = document.getElementById('continueSessionBtn');
     if (continueBtn) continueBtn.addEventListener('click', function() { hideTimeoutWarning(); resetInactivityTimer(); });
     var returnBtn = document.getElementById('returnNowBtn');
