@@ -109,6 +109,19 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
 
 /* Version A 2.2 review updates */
 .orange-emphasis{color:var(--orange);font-weight:900}.screen3-intro{font-size:25px}.medical-icon{width:142px;height:96px;margin-bottom:8px}.medical-icon svg{width:100%;height:100%}.card-subtitle{font-size:16px;font-weight:700;color:#5f6f82;margin-top:-4px}.flip-hint{margin-top:auto;font-size:15px;color:#7a8795;font-weight:700}.back-title{width:calc(100% + 48px);margin:-22px -24px 16px;padding:12px 18px;background:var(--navy);color:#fff;font-size:24px;font-weight:900;text-align:center}.test-cards .back p,.test-cards .back li{font-size:18px;line-height:1.27}.test-cards .face.front{justify-content:flex-start;padding-top:22px}.test-cards .flip-hint{padding-bottom:4px}.compare-content{padding-top:18px}.compare-subtitle{margin-bottom:10px;font-size:19px}.comparison-wrap{flex:1;min-height:0;overflow:hidden}.comparison-table{width:100%;height:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid #d7e2ee;border-radius:18px;overflow:hidden;box-shadow:0 10px 28px rgba(10,32,64,.08);font-size:15px}.comparison-table th,.comparison-table td{padding:8px 10px;border-right:1px solid #d7e2ee;border-bottom:1px solid #d7e2ee;vertical-align:middle;text-align:center;line-height:1.25}.comparison-table thead th{background:var(--navy);color:#fff;font-size:18px}.comparison-table tbody th{background:#eef5fb;color:var(--navy);text-align:left;width:18%;font-size:16px}.comparison-table tr:last-child th,.comparison-table tr:last-child td{border-bottom:0}.comparison-table th:last-child,.comparison-table td:last-child{border-right:0}.insurance-box{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:10px;background:#fff7eb;border:1px solid #f2c27d;border-radius:16px;padding:8px 14px;font-size:15px;line-height:1.3}.insurance-box strong{font-size:18px;color:var(--navy)}.small-qr{width:66px!important;height:66px!important}.risk-grid{margin-top:8px!important}.risk-badge{font-size:31px;font-weight:900;color:#fff;border-radius:16px;padding:13px 28px;margin-bottom:18px}.risk-badge.average{background:var(--teal)}.risk-badge.increased{background:var(--orange)}.symptom-alert{margin-top:16px;background:#fff4e8;border:2px solid #f39c34;border-radius:18px;padding:13px 18px;text-align:center;display:flex;flex-direction:column;gap:7px}.symptom-alert strong{font-size:20px;color:var(--navy)}.symptom-alert span{font-size:16px;font-weight:700;white-space:nowrap}.flip-card.faq .back p,.flip-card.faq .back li{font-size:18px!important;line-height:1.3!important}.closing{padding:0 46px 22px!important;justify-content:flex-start!important}.closing-hero{width:100%;height:40%;min-height:280px;display:grid;grid-template-columns:1.35fr .9fr;align-items:stretch;background:linear-gradient(90deg,#fff 0%,#fff 55%,#eef5fb 100%);border-radius:0 0 28px 28px;overflow:hidden}.closing-copy{text-align:left;padding:30px 22px 20px 46px;display:flex;flex-direction:column;justify-content:center}.closing-copy h2{font-size:46px;margin:0 0 2px}.closing-kicker{font-size:21px;font-weight:700;color:#40556d;margin:0 0 22px}.closing .bigline{font-size:45px!important;line-height:1.08!important;color:var(--navy)!important;margin:0!important}.community-kiosk-img{width:100%;height:100%;object-fit:cover}.closing-cards{margin-top:16px!important;gap:18px!important}.closing-cards .resource-card{min-height:220px;padding:16px 18px}.resource-icon{width:52px;height:52px;border-radius:50%;background:#eaf2ff;color:#0b3d7a;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:7px}.closing-cards .resource-card h3{font-size:25px;margin-bottom:7px}.closing-cards .resource-card p{font-size:17px}.closing-cards .qr{width:82px;height:82px;border-width:4px;margin:4px 0}.closing-cards .phone{font-size:25px!important;margin:3px 0!important}.resource-small{font-size:14px!important}.resource-link{color:#0b6fae;font-weight:900!important}.contact-phone{font-size:22px!important}.progress-line{grid-template-columns:repeat(6,1fr)}
+
+/* Session timeout dialog */
+.session-timeout-overlay { display:none; position:fixed; inset:0; z-index:1000; background:rgba(10,34,57,.72); align-items:center; justify-content:center; padding:24px; }
+.session-timeout-overlay.show { display:flex; }
+.session-timeout-dialog { width:min(560px, 92vw); background:#fff; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:34px; text-align:center; }
+.session-timeout-dialog h2 { margin:0 0 14px; color:var(--navy); font-size:34px; }
+.session-timeout-dialog p { margin:0 0 22px; font-size:22px; line-height:1.4; }
+.session-countdown { font-size:52px; line-height:1; font-weight:900; color:var(--teal); margin:12px 0 26px; }
+.session-timeout-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.session-timeout-actions button { min-width:190px; padding:15px 20px; border:0; border-radius:12px; font-size:19px; font-weight:800; cursor:pointer; }
+#continueSessionBtn { background:var(--teal); color:#fff; }
+#returnNowBtn { background:var(--navy); color:#fff; }
+
 </style>
 <style>
 /* Version A 2.3 review refinements */
@@ -326,6 +339,19 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 </div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
+
+<div class="session-timeout-overlay" id="sessionTimeoutOverlay" role="dialog" aria-modal="true" aria-labelledby="sessionTimeoutTitle" aria-describedby="sessionTimeoutText">
+  <div class="session-timeout-dialog">
+    <h2 id="sessionTimeoutTitle">Are you still there?</h2>
+    <p id="sessionTimeoutText">This kiosk will return to the welcome screen in:</p>
+    <div class="session-countdown" id="sessionCountdown" aria-live="assertive">10</div>
+    <div class="session-timeout-actions">
+      <button id="continueSessionBtn" type="button">Continue Session</button>
+      <button id="returnNowBtn" type="button">Return Now</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function() {
   'use strict';
@@ -334,6 +360,13 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var currentSession = null;
   var storageKey = 'crc_kiosk_vA22_sessions';
   var progressLabels = ['Why Screening Matters','Screening Tests','Compare Options','Who Should Be Screened?','Common Questions','Resources'];
+  var inactivityMs = 60000;
+  var warningMs = 10000;
+  var inactivityTimer = null;
+  var countdownTimer = null;
+  var countdownValue = 10;
+  var adminPaused = false;
+  var adminPassword = '1026';
 
   function makeId() {
     return 's_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
@@ -369,6 +402,53 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     currentSession.duration_seconds = Math.round((new Date(currentSession.end_time) - new Date(currentSession.start_time)) / 1000);
     saveSession();
   }
+
+  function removeActiveSession() {
+    if (!currentSession) return;
+    var activeId = currentSession.session_id;
+    var sessions = getSessions().filter(function(s) { return s.session_id !== activeId; });
+    localStorage.setItem(storageKey, JSON.stringify(sessions));
+    currentSession = null;
+  }
+  function hideTimeoutWarning() {
+    var overlay = document.getElementById('sessionTimeoutOverlay');
+    if (overlay) overlay.classList.remove('show');
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+  }
+  function resetKioskView() {
+    document.querySelectorAll('.flip-card.flipped').forEach(function(c){ c.classList.remove('flipped'); });
+    showScreen(0);
+  }
+  function timeoutSession() {
+    clearInactivityTimers();
+    hideTimeoutWarning();
+    removeActiveSession();
+    resetKioskView();
+  }
+  function showTimeoutWarning() {
+    if (!currentSession || currentScreen === 0 || adminPaused) return;
+    var overlay = document.getElementById('sessionTimeoutOverlay');
+    var count = document.getElementById('sessionCountdown');
+    countdownValue = Math.ceil(warningMs / 1000);
+    if (count) count.textContent = countdownValue;
+    if (overlay) overlay.classList.add('show');
+    countdownTimer = setInterval(function() {
+      countdownValue -= 1;
+      if (count) count.textContent = Math.max(0, countdownValue);
+      if (countdownValue <= 0) timeoutSession();
+    }, 1000);
+  }
+  function clearInactivityTimers() {
+    if (inactivityTimer) { clearTimeout(inactivityTimer); inactivityTimer = null; }
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+  }
+  function resetInactivityTimer() {
+    if (!currentSession || currentScreen === 0 || adminPaused) return;
+    clearInactivityTimers();
+    hideTimeoutWarning();
+    inactivityTimer = setTimeout(showTimeoutWarning, inactivityMs - warningMs);
+  }
+
   function renderProgress() {
     document.querySelectorAll('.progress').forEach(function(box) {
       var active = parseInt(box.getAttribute('data-progress'), 10);
@@ -385,7 +465,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   function showScreen(n) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     var target = document.getElementById('screen-' + n);
-    if (target) { target.classList.add('active'); currentScreen = n; recordScreen(n); }
+    if (target) { target.classList.add('active'); currentScreen = n; recordScreen(n); if (n === 0) { clearInactivityTimers(); hideTimeoutWarning(); } else { resetInactivityTimer(); } }
   }
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -409,15 +489,45 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   document.addEventListener('DOMContentLoaded', function() {
     renderProgress();
     var startBtn = document.getElementById('startBtn');
-    if (startBtn) startBtn.addEventListener('click', function() { startSession(); showScreen(1); });
+    if (startBtn) startBtn.addEventListener('click', function() { startSession(); showScreen(1); resetInactivityTimer(); });
     document.querySelectorAll('[data-go]').forEach(function(btn) { btn.addEventListener('click', function() { showScreen(parseInt(btn.getAttribute('data-go'),10)); }); });
     var restartBtn = document.getElementById('restartBtn');
-    if (restartBtn) restartBtn.addEventListener('click', function() { if (currentSession) { currentSession.end_time = new Date().toISOString(); saveSession(); } currentSession = null; document.querySelectorAll('.flip-card.flipped').forEach(function(c){c.classList.remove('flipped');}); showScreen(0); });
+    if (restartBtn) restartBtn.addEventListener('click', function() { clearInactivityTimers(); hideTimeoutWarning(); if (currentSession) { currentSession.end_time = new Date().toISOString(); saveSession(); } currentSession = null; document.querySelectorAll('.flip-card.flipped').forEach(function(c){c.classList.remove('flipped');}); showScreen(0); });
     document.querySelectorAll('.flip-card').forEach(function(card) { card.addEventListener('click', function() { card.classList.toggle('flipped'); if (card.classList.contains('flipped')) recordFlip(card.getAttribute('data-card')); }); });
     var adminBtn = document.getElementById('adminBtn'), adminPanel = document.getElementById('adminPanel');
-    if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() { adminPanel.classList.toggle('show'); });
+    if (adminBtn && adminPanel) adminBtn.addEventListener('click', function() {
+      if (adminPanel.classList.contains('show')) {
+        adminPanel.classList.remove('show');
+        adminPaused = false;
+        resetInactivityTimer();
+        return;
+      }
+
+      var enteredPassword = window.prompt('Enter the Admin password:');
+      if (enteredPassword === null) return;
+      if (enteredPassword !== adminPassword) {
+        window.alert('Incorrect password. The Admin panel was not opened.');
+        return;
+      }
+
+      adminPanel.classList.add('show');
+      adminPaused = true;
+      clearInactivityTimers();
+      hideTimeoutWarning();
+    });
     var dl = document.getElementById('downloadCsvBtn'); if (dl) dl.addEventListener('click', downloadCsv);
     var cl = document.getElementById('clearDataBtn'); if (cl) cl.addEventListener('click', function() { if (confirm('Clear local engagement data on this device?')) { localStorage.removeItem(storageKey); currentSession = null; } });
+    var continueBtn = document.getElementById('continueSessionBtn');
+    if (continueBtn) continueBtn.addEventListener('click', function() { hideTimeoutWarning(); resetInactivityTimer(); });
+    var returnBtn = document.getElementById('returnNowBtn');
+    if (returnBtn) returnBtn.addEventListener('click', timeoutSession);
+    ['pointerdown','keydown','touchstart','wheel'].forEach(function(evt) {
+      document.addEventListener(evt, function(e) {
+        var overlay = document.getElementById('sessionTimeoutOverlay');
+        if (overlay && overlay.classList.contains('show')) return;
+        resetInactivityTimer();
+      }, {passive:true});
+    });
   });
 })();
 </script>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0-pwa-1';
+const CACHE_NAME = 'crc-community-kiosk-v1.0-pwa-session-admin-1026';
 const APP_SHELL = [
   './',
   './index.html',
