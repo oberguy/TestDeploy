@@ -28,3 +28,19 @@
 - Added automatic migration of existing localStorage session records.
 - Added IndexedDB persistence with localStorage fallback.
 - Preserved existing CSV export and completed-session data.
+
+
+## Data Export Update
+- Improved CSV generation with UTF-8 BOM and Windows-compatible line endings.
+- Added date-stamped export filenames.
+- Added iOS/iPadOS Share Sheet support using the Web Share API with file sharing.
+- Retained standard CSV download as a fallback for unsupported browsers and devices.
+
+## PWA Stability Release (v1.0.8)
+- Changed page navigation caching to network-first with offline fallback.
+- Added controlled service-worker activation and an update-available prompt.
+- Added automatic update checks at launch and when the app becomes visible.
+- Deletes old cache versions during service-worker activation.
+- Fixed inactivity timer cleanup to prevent overlapping warning countdowns.
+- Ensured timeout and Return Now close dialogs/admin, clear active UI state, scroll to top, and return to the Welcome screen.
+- Preserves completed engagement statistics while clearing only the active timed-out session.

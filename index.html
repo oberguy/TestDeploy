@@ -122,6 +122,17 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
 #continueSessionBtn { background:var(--teal); color:#fff; }
 #returnNowBtn { background:var(--navy); color:#fff; }
 
+
+/* Application update notification */
+.app-update-overlay { display:none; position:fixed; inset:0; z-index:1100; background:rgba(10,34,57,.72); align-items:center; justify-content:center; padding:24px; }
+.app-update-overlay.show { display:flex; }
+.app-update-dialog { width:min(540px,92vw); background:#fff; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.35); padding:32px; text-align:center; }
+.app-update-dialog h2 { margin:0 0 12px; color:var(--navy); font-size:32px; }
+.app-update-dialog p { margin:0 0 22px; font-size:20px; line-height:1.4; }
+.app-update-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.app-update-actions button { min-width:170px; padding:14px 18px; border:0; border-radius:12px; font-size:18px; font-weight:800; cursor:pointer; }
+#reloadUpdateBtn { background:var(--navy); color:#fff; }
+#laterUpdateBtn { background:#e6edf3; color:var(--navy); }
 </style>
 <style>
 /* Version A 2.3 review refinements */
@@ -352,6 +363,18 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   </div>
 </div>
 
+
+<div class="app-update-overlay" id="appUpdateOverlay" role="dialog" aria-modal="true" aria-labelledby="appUpdateTitle" aria-describedby="appUpdateText">
+  <div class="app-update-dialog">
+    <h2 id="appUpdateTitle">Update Available</h2>
+    <p id="appUpdateText">A newer version of the kiosk is ready. Reload now to apply it.</p>
+    <div class="app-update-actions">
+      <button id="reloadUpdateBtn" type="button">Reload Now</button>
+      <button id="laterUpdateBtn" type="button">Later</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function() {
   'use strict';
@@ -515,7 +538,15 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   }
   function resetKioskView() {
     document.querySelectorAll('.flip-card.flipped').forEach(function(c){ c.classList.remove('flipped'); });
+    document.querySelectorAll('input, textarea, select').forEach(function(field) {
+      if (field.type === 'checkbox' || field.type === 'radio') field.checked = false;
+      else field.value = '';
+    });
+    var adminPanel = document.getElementById('adminPanel');
+    if (adminPanel) adminPanel.classList.remove('show');
+    adminPaused = false;
     showScreen(0);
+    window.scrollTo(0, 0);
   }
   async function timeoutSession() {
     clearInactivityTimers();
@@ -524,7 +555,9 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     resetKioskView();
   }
   function showTimeoutWarning() {
+    inactivityTimer = null;
     if (!currentSession || currentScreen === 0 || adminPaused) return;
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
     var overlay = document.getElementById('sessionTimeoutOverlay');
     var count = document.getElementById('sessionCountdown');
     countdownValue = Math.ceil(warningMs / 1000);
@@ -569,7 +602,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     v = String(v == null ? '' : v);
     return '"' + v.replace(/"/g, '""') + '"';
   }
-  function downloadCsv() {
+  function buildCsvExport() {
     if (currentSession) {
       currentSession.end_time = new Date().toISOString();
       currentSession.duration_seconds = Math.round((new Date(currentSession.end_time) - new Date(currentSession.start_time)) / 1000);
@@ -577,11 +610,58 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     }
     var sessions = getSessions();
     var rows = [['session_id','start_time','end_time','duration_seconds','screens_viewed','completed','card_flips_json']];
-    sessions.forEach(function(s) { rows.push([s.session_id, s.start_time, s.end_time, s.duration_seconds, (s.screens_viewed || []).join(' > '), s.completed ? 'yes':'no', JSON.stringify(s.card_flips || {})]); });
-    var csv = rows.map(function(r) { return r.map(csvEscape).join(','); }).join('\\n');
-    var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a'); a.href = url; a.download = 'crc_kiosk_engagement.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    sessions.forEach(function(s) {
+      rows.push([
+        s.session_id,
+        s.start_time,
+        s.end_time,
+        s.duration_seconds,
+        (s.screens_viewed || []).join(' > '),
+        s.completed ? 'yes' : 'no',
+        JSON.stringify(s.card_flips || {})
+      ]);
+    });
+    var csv = '\uFEFF' + rows.map(function(r) { return r.map(csvEscape).join(','); }).join('\r\n');
+    var stamp = new Date().toISOString().slice(0, 10);
+    return {
+      filename: 'crc_kiosk_engagement_' + stamp + '.csv',
+      blob: new Blob([csv], {type:'text/csv;charset=utf-8;'})
+    };
+  }
+  function saveCsvDownload(fileData) {
+    var url = URL.createObjectURL(fileData.blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = fileData.filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  }
+  async function downloadCsv() {
+    var fileData = buildCsvExport();
+    var shareFile = null;
+    try {
+      shareFile = new File([fileData.blob], fileData.filename, {type:'text/csv'});
+    } catch (e) {
+      shareFile = null;
+    }
+
+    if (shareFile && navigator.share && navigator.canShare && navigator.canShare({files:[shareFile]})) {
+      try {
+        await navigator.share({
+          files: [shareFile],
+          title: 'CRC Kiosk Engagement Data',
+          text: 'CRC Community Education Kiosk engagement data export.'
+        });
+        return;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+    }
+
+    saveCsvDownload(fileData);
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -634,13 +714,60 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
 <script>
 (function () {
+  var refreshing = false;
+  var updateRegistration = null;
+  var updateOverlay = document.getElementById('appUpdateOverlay');
+
+  function showUpdateAvailable(registration) {
+    if (!registration || !registration.waiting) return;
+    updateRegistration = registration;
+    if (updateOverlay) updateOverlay.classList.add('show');
+  }
+
   if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./service-worker.js').catch(function (error) {
+      navigator.serviceWorker.register('./service-worker.js').then(function (registration) {
+        if (registration.waiting && navigator.serviceWorker.controller) showUpdateAvailable(registration);
+
+        registration.addEventListener('updatefound', function () {
+          var worker = registration.installing;
+          if (!worker) return;
+          worker.addEventListener('statechange', function () {
+            if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateAvailable(registration);
+            }
+          });
+        });
+
+        registration.update().catch(function () {});
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible') registration.update().catch(function () {});
+        });
+      }).catch(function (error) {
         console.error('Service worker registration failed:', error);
       });
     });
   }
+
+  var reloadBtn = document.getElementById('reloadUpdateBtn');
+  if (reloadBtn) reloadBtn.addEventListener('click', function () {
+    if (updateRegistration && updateRegistration.waiting) {
+      reloadBtn.disabled = true;
+      updateRegistration.waiting.postMessage({type:'SKIP_WAITING'});
+    } else {
+      window.location.reload();
+    }
+  });
+  var laterBtn = document.getElementById('laterUpdateBtn');
+  if (laterBtn) laterBtn.addEventListener('click', function () {
+    if (updateOverlay) updateOverlay.classList.remove('show');
+  });
 
   var wakeLock = null;
   async function requestWakeLock() {
