@@ -1,3 +1,11 @@
+# v1.0.31 — Portrait Resources Card Grid
+
+- Matched the Resources portrait card layout to the Screening Tests 2 + 1 pattern.
+- Uses two equal-width cards on the first row and one same-width centered card on the second row.
+- Removed the full-width third resource card in portrait.
+- Preserved separate bottom navigation and locked landscape layouts.
+- Updated visible build and service-worker cache versions.
+
 # v1.0.30 — iPad Portrait Resources Fix
 
 - Rebuilt the Resources / Thank You page for iPad portrait using a stable 2 + 1 full-width card layout.

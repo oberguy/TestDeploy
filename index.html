@@ -1110,7 +1110,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
 
 <style id="ipad-portrait-resources-v1-0-30">
-/* v1.0.30: stabilize Resources / Thank You in iPad portrait. */
+/* v1.0.31: stabilize Resources / Thank You in iPad portrait. */
 @media (orientation: portrait) and (min-width: 700px) and (max-width: 1100px) {
   #screen-6.closing {
     display:none;
@@ -1213,6 +1213,69 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 }
 </style>
 
+
+<style id="ipad-portrait-resources-v1-0-31">
+/* v1.0.31: make Resources cards match the Screening Tests portrait 2 + 1 pattern. */
+@media (orientation: portrait) and (min-width: 700px) and (max-width: 1100px) {
+  #screen-6.closing {
+    grid-template-rows:auto minmax(0,1fr) 88px !important;
+    padding:0 30px !important;
+  }
+  #screen-6 .closing-hero {
+    height:220px !important;
+    min-height:220px !important;
+  }
+  #screen-6 .closing-cards {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:18px !important;
+    margin-top:14px !important;
+    padding-bottom:18px !important;
+    align-content:start !important;
+    overflow-y:auto !important;
+  }
+  #screen-6 .closing-cards .resource-card {
+    width:100% !important;
+    min-height:265px !important;
+    height:auto !important;
+    padding:16px 14px !important;
+  }
+  #screen-6 .closing-cards .resource-card:nth-child(3) {
+    grid-column:1 / -1 !important;
+    width:calc(50% - 9px) !important;
+    min-height:265px !important;
+    height:auto !important;
+    justify-self:center !important;
+  }
+  #screen-6 .closing-cards .resource-card h3 {
+    font-size:23px !important;
+    margin:4px 0 6px !important;
+  }
+  #screen-6 .closing-cards .resource-card p {
+    font-size:15px !important;
+    line-height:1.18 !important;
+  }
+  #screen-6 .closing-cards .resource-icon {
+    width:46px !important;
+    height:46px !important;
+    font-size:24px !important;
+    margin-bottom:4px !important;
+  }
+  #screen-6 .closing-cards .qr {
+    width:72px !important;
+    height:72px !important;
+    margin:5px 0 !important;
+  }
+  #screen-6 .closing-cards .phone,
+  #screen-6 .closing-cards .contact-phone {
+    font-size:21px !important;
+  }
+  #screen-6 .closing-cards .resource-small {
+    font-size:12px !important;
+    line-height:1.15 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -1222,7 +1285,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.30">v1.0.30</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.31">v1.0.31</div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
@@ -1698,7 +1761,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.30';
+  var BUILD_VERSION = '1.0.31';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;
