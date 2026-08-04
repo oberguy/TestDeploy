@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.36-timeout-tracking';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.37-ipad-pro-10-5';
 const APP_SHELL = [
   './',
   './index.html',

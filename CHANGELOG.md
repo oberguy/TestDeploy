@@ -1,3 +1,10 @@
+# v1.0.37 — iPad Pro 10.5 Compatibility
+
+- Added a targeted landscape breakpoint for the iPad Pro 10.5-inch viewport.
+- Reduced the Why Screening Matters infographic width by approximately 7% on that device class.
+- Keeps the Rectum label inside the viewport.
+- Leaves all other pages, portrait layouts, and other devices unchanged.
+
 # v1.0.36 - Timeout Engagement Tracking Fix
 
 - Timed-out sessions are now finalized and saved as incomplete sessions instead of being deleted.
