@@ -932,6 +932,171 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   line-height: normal !important;
 }
 </style>
+
+<style id="ipad-portrait-v1-0-28">
+/* v1.0.28: dedicated iPad portrait layout. Landscape remains unchanged. */
+@media (orientation: portrait) and (min-width: 700px) and (max-width: 1100px) {
+  html, body { width:100%; height:100%; overflow:hidden !important; }
+  .app { width:100vw; height:100dvh !important; min-height:0 !important; }
+  .screen, .screen.active { width:100%; height:100dvh !important; min-height:0 !important; overflow:hidden; }
+
+  .topbar { flex:0 0 auto; padding:16px 30px 14px; }
+  .top-title { font-size:26px; gap:14px; }
+  .ribbon { width:34px; height:34px; font-size:20px; }
+  .progress { flex:0 0 auto; padding:12px 24px 8px; }
+  .progress-line { gap:5px; }
+  .step { font-size:12px; line-height:1.12; }
+  .step .dot { width:30px; height:30px; margin-bottom:5px; }
+
+  .learning .content {
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    padding:22px 30px 24px !important;
+  }
+  .page-header { flex:0 0 auto; }
+  .page-header-title { font-size:40px !important; line-height:1.05 !important; }
+  .page-header-subtitle { font-size:21px !important; line-height:1.28 !important; white-space:normal !important; margin-bottom:16px !important; }
+
+  .learning > .nav,
+  #screen-6 > .nav {
+    flex:0 0 88px !important;
+    width:100% !important;
+    height:88px !important;
+    padding:10px 30px 18px !important;
+    margin:0 !important;
+    background:linear-gradient(180deg,rgba(246,248,251,.35),#f6f8fb 28%);
+    position:relative !important;
+    inset:auto !important;
+    z-index:20;
+  }
+  .nav button { min-width:180px; font-size:21px; padding:15px 22px; }
+
+  /* Why Screening Matters */
+  #screen-1 .why-img-wrap { min-height:520px; align-items:flex-start; }
+  #screen-1 .why-img { width:100%; height:auto; max-height:none; }
+
+  /* Screening Tests: tablet 2 + 1 arrangement */
+  #screen-2 .card-grid.three {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:18px !important;
+    margin-top:4px !important;
+  }
+  #screen-2 .card-grid.three .flip-card { min-height:265px !important; }
+  #screen-2 .card-grid.three .flip-card:nth-child(3) {
+    grid-column:1 / -1;
+    width:calc(50% - 9px);
+    justify-self:center;
+  }
+  #screen-2 .medical-icon { width:145px !important; height:98px !important; }
+  #screen-2 .card-title { font-size:27px; }
+  #screen-2 .learn-panel { width:min(92%,760px); margin-top:18px; }
+
+  /* Compare Options: only table scrolls horizontally when needed. */
+  #screen-3 .content { overflow-y:auto; }
+  #screen-3 .comparison-wrap {
+    flex:0 0 auto !important;
+    width:100%;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:5px;
+  }
+  #screen-3 .comparison-table {
+    width:980px !important;
+    min-width:980px !important;
+    height:auto !important;
+    font-size:16px !important;
+  }
+  #screen-3 .comparison-table th,
+  #screen-3 .comparison-table td { padding:9px 10px !important; }
+  #screen-3 .insurance-box {
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+    margin-top:14px;
+  }
+  #screen-3 .coverage-qr-wrap { max-width:none; justify-content:center; margin-left:0; }
+  #screen-3 .coverage-label { text-align:left; max-width:360px; }
+
+  /* Who Should Be Screened: keep tablet two-column cards. */
+  #screen-4 .risk-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:18px !important;
+    margin-top:6px !important;
+  }
+  #screen-4 .flip-card.risk { min-height:305px !important; }
+  #screen-4 .risk-badge { font-size:27px !important; padding:12px 20px !important; }
+  #screen-4 .card-front-text { font-size:19px !important; }
+  #screen-4 .symptom-alert { margin-top:16px !important; padding:12px 15px !important; }
+  #screen-4 .symptom-alert span { white-space:normal !important; line-height:1.35; }
+
+  /* Common Questions: two-column tablet grid. */
+  #screen-5 .card-grid.six {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:16px !important;
+    margin-top:4px !important;
+  }
+  #screen-5 .flip-card.faq { min-height:220px !important; }
+
+  /* Resources / Thank You: compact hero and 2 + 1 cards. */
+  #screen-6.closing {
+    display:none;
+    padding:0 30px 0 !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    text-align:center;
+    overflow:hidden;
+  }
+  #screen-6.closing.active { display:flex; }
+  #screen-6 .closing-hero {
+    flex:0 0 260px;
+    min-height:260px !important;
+    height:260px !important;
+    border-radius:0 0 24px 24px;
+  }
+  #screen-6 .closing-copy { padding:24px 24px 18px 30px; }
+  #screen-6 .closing-copy h2 { font-size:40px; }
+  #screen-6 .closing-kicker { font-size:19px; margin-bottom:14px; }
+  #screen-6 .closing .bigline,
+  #screen-6 .bigline { font-size:37px !important; }
+  #screen-6 .closing-cards {
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:16px !important;
+    margin:16px 0 0 !important;
+    padding:0 0 18px;
+  }
+  #screen-6 .closing-cards .resource-card {
+    min-height:300px !important;
+    height:auto !important;
+    padding:18px 16px !important;
+  }
+  #screen-6 .closing-cards .resource-card:nth-child(3) {
+    grid-column:1 / -1;
+    width:calc(50% - 8px);
+    justify-self:center;
+  }
+
+  /* Welcome remains tablet-scaled, never phone-stacked. */
+  #screen-0.welcome { height:100dvh !important; min-height:0 !important; overflow:hidden; padding:40px 48px; }
+  #screen-0 .logo-official { width:min(720px,82vw); margin-bottom:36px; }
+  #screen-0 h1 { font-size:50px; }
+  #screen-0 .tagline { font-size:27px; }
+}
+
+/* Phone layout remains single-column below iPad width. */
+@media (orientation: portrait) and (max-width: 699px) {
+  .card-grid.three,.card-grid.two,.card-grid.six,.resource-row { grid-template-columns:1fr !important; }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -941,7 +1106,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.27">v1.0.27</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.28">v1.0.28</div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
@@ -1417,7 +1582,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.27';
+  var BUILD_VERSION = '1.0.28';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

@@ -1,3 +1,15 @@
+# v1.0.28 — Dedicated iPad Portrait Support
+
+- Added a separate iPad portrait breakpoint for widths from 700px through 1100px.
+- Preserved all locked landscape layouts.
+- Prevented iPad portrait from falling into the single-column phone layout.
+- Kept Average Risk and Increased Risk cards side by side.
+- Added a two-plus-one layout for Screening Tests and Resources.
+- Added a two-column Common Questions grid.
+- Limited horizontal scrolling to the comparison table rather than the whole page.
+- Added scrollable content regions with navigation kept clear and consistently positioned.
+- Updated the visible version and service-worker cache to v1.0.28.
+
 # v1.0.27 — Welcome-Only Admin Access
 
 - Moved the Admin button and Admin panel into the Welcome screen.
