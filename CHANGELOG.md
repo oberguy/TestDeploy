@@ -129,3 +129,8 @@
 - Improved the coverage-information text wrapping.
 - Preserved the standalone iPad table-fill behavior and Safari layout.
 - Updated the PWA cache version so deployed devices receive the release.
+## v1.0.20 – Welcome Screen Version Label
+- Added a small, low-contrast version number to the bottom-left of the Welcome screen.
+- Synchronized the visible version, application build constant, and service-worker cache version to v1.0.20.
+- Kept the version label non-interactive and out of the primary kiosk workflow.
+
