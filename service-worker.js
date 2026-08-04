@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.32-portrait-resource-content';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.33-portrait-resource-container';
 const APP_SHELL = [
   './',
   './index.html',

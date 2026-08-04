@@ -1,3 +1,12 @@
+# v1.0.33 — Portrait Resources Container Growth
+
+- Removed the fixed-height portrait Resources tile region.
+- Made the middle Resources container grow naturally with all three tiles.
+- Moved portrait scrolling to the page instead of an inner tile box.
+- Kept the 2 + 1 portrait card arrangement.
+- Positioned navigation after the complete tile grid so it no longer floats below an undersized container.
+- Left landscape layouts unchanged.
+
 # v1.0.32 — Portrait Resources Content-Driven Cards
 
 - Replaced fixed portrait Resources card heights with content-driven sizing.
