@@ -1,3 +1,11 @@
+# v1.0.25 — Resources / Thank You Global Layout Fix
+
+- Reduced the three resource-card heights globally across desktop, Safari, and installed iPad Home Screen mode.
+- Preserved the larger QR codes, phone numbers, shorter hero, and existing content.
+- Prevented the card grid from stretching to fill excess vertical space.
+- Realigned Previous and Start Over to the locked navigation side margins, height, size, and bottom spacing used on earlier pages.
+- Updated the visible app version and service-worker cache version.
+
 # v1.0.24 — Resources / Thank You Page
 
 - Reduced the closing hero height by approximately 15–20%.

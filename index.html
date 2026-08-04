@@ -857,6 +857,50 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   }
 }
 </style>
+
+<style id="closing-page-v1025">
+/* v1.0.25: global Resources / Thank You sizing and navigation alignment fix. */
+#screen-6.closing {
+  position: relative;
+  padding-bottom: 0 !important;
+}
+#screen-6 .closing-cards {
+  flex: 0 0 auto !important;
+  height: clamp(420px, 48vh, 505px) !important;
+  min-height: 0 !important;
+  align-items: stretch !important;
+}
+#screen-6 .closing-cards .resource-card {
+  min-height: 0 !important;
+  height: 100% !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+/* Use the same full-width navigation rail and side insets as locked content pages. */
+#screen-6 .nav {
+  width: calc(100% + 92px) !important;
+  height: 86px !important;
+  margin: auto 0 0 -46px !important;
+  padding: 0 46px 26px !important;
+  flex: 0 0 86px !important;
+  align-items: center !important;
+}
+#screen-6 .nav button {
+  min-width: 190px !important;
+  padding: 17px 26px !important;
+  border-radius: 15px !important;
+  font-size: 23px !important;
+}
+@media (max-height: 850px) and (orientation: landscape) {
+  #screen-6 .closing-cards {
+    height: clamp(380px, 46vh, 430px) !important;
+  }
+  #screen-6 .closing-cards .resource-card {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -866,7 +910,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.24">v1.0.24</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.25">v1.0.25</div>
 </section>
 <section class="screen learning" id="screen-1">
 <div class="topbar"><div class="top-title"><span class="ribbon">🎗</span> Learn About Colon Cancer Screening</div></div>
@@ -1337,7 +1381,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.24';
+  var BUILD_VERSION = '1.0.25';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;
