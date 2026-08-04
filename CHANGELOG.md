@@ -1,3 +1,9 @@
+
+## v1.0.16 – iPad Standalone Comparison Table Fill
+- Kept the Safari comparison layout unchanged.
+- Made the comparison table fill the available standalone iPad container height.
+- Removed the unused blank area below the table by allowing row heights to expand evenly.
+- Preserved the full table, insurance panel, navigation, and locked shared header.
 # v1.0.15 – iPad Home Screen Comparison Fix
 
 - Added dynamic viewport sizing for installed standalone mode.
@@ -99,3 +105,11 @@
 - Standardized subtitle size, weight, line height, and spacing.
 - Page 4 now aligns to the same header baseline as Pages 2 and 3.
 - Updated the PWA build and cache version to v1.0.14.
+
+## v1.0.17 – Cost & Insurance Readability
+- Increased the Cost & Insurance heading and body text for easier reading on iPad.
+- Slightly enlarged the dollar icon.
+- Enlarged the coverage QR code and added more spacing around it.
+- Improved the coverage-information text wrapping.
+- Preserved the standalone iPad table-fill behavior and Safari layout.
+- Updated the PWA cache version so deployed devices receive the release.
