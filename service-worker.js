@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.20-visible-version';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.21-common-questions-header';
 const APP_SHELL = [
   './',
   './index.html',

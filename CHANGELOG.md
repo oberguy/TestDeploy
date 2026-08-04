@@ -1,3 +1,11 @@
+# v1.0.21 — Common Questions Shared Header
+
+- Applied the locked shared header styling to the Common Questions page.
+- Matched title size, position, underline, subtitle size, weight, spacing, and left alignment to the previous content pages.
+- Removed the Common Questions subtitle's page-specific gradient callout and border styling.
+- Left the FAQ card layout and content unchanged.
+- Updated the visible version, JavaScript build version, and service-worker cache version.
+
 
 ## v1.0.19 – Installed iPad Who Should Be Screened Refinement
 - Slightly enlarged the Average Risk and Increased Risk cards in installed iPad landscape mode.
