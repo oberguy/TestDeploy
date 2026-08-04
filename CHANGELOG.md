@@ -1,3 +1,9 @@
+
+## v1.0.23 – Common Questions Card Height
+- Restored the FAQ cards to their original 220px minimum height for readable back-side answers.
+- Tightened the space below the subtitle to move the card grid upward.
+- Maintained a 15px minimum buffer above the locked Previous/Next navigation.
+- Preserved card width, emoji size, subtitle wording, shared header, and navigation placement.
 # Common Questions Layout - v1.0.22
 
 - Reduced FAQ card height by approximately 17 percent.

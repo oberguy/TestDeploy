@@ -674,7 +674,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 </style>
 
 <style id="common-questions-shared-header-v1021">
-/* v1.0.22: Common Questions now uses the locked shared header without page-specific callout styling. */
+/* v1.0.23: Common Questions now uses the locked shared header without page-specific callout styling. */
 #screen-5 .page-header {
   margin-bottom: 0 !important;
 }
@@ -700,26 +700,27 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 }
 </style>
 
-<style id="common-questions-layout-v1022">
-/* v1.0.22: compact Common Questions grid while preserving locked header/navigation. */
+<style id="common-questions-layout-v1023">
+/* v1.0.23: restore original FAQ height and preserve navigation clearance. */
 #screen-5 .content {
   padding-left: 38px !important;
   padding-right: 38px !important;
-  padding-bottom: 10px !important;
+  padding-top: 16px !important;
+  padding-bottom: 15px !important;
 }
 #screen-5 .page-header-subtitle {
-  margin-bottom: 5px !important;
+  margin-bottom: 2px !important;
 }
 #screen-5 .card-grid.six {
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 14px 16px !important;
+  gap: 12px 16px !important;
   margin-top: 0 !important;
   flex: 1 1 auto;
   min-height: 0;
   align-content: start;
 }
 #screen-5 .flip-card.faq {
-  min-height: 182px !important;
+  min-height: 220px !important;
 }
 #screen-5 .flip-card.faq .face.front {
   padding: 18px 22px !important;
@@ -728,20 +729,24 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   flex: 0 0 86px;
   position: relative;
   z-index: 5;
+  margin-top: 15px !important;
 }
 @media (display-mode: standalone) and (orientation: landscape) and (max-height: 900px) {
   #screen-5 .content {
-    padding-top: 16px !important;
-    padding-bottom: 6px !important;
+    padding-top: 12px !important;
+    padding-bottom: 15px !important;
   }
   #screen-5 .page-header-subtitle {
-    margin-bottom: 3px !important;
+    margin-bottom: 0 !important;
   }
   #screen-5 .card-grid.six {
-    gap: 12px 16px !important;
+    gap: 10px 16px !important;
   }
   #screen-5 .flip-card.faq {
-    min-height: 176px !important;
+    min-height: 220px !important;
+  }
+  #screen-5 .nav {
+    margin-top: 15px !important;
   }
 }
 @media (orientation: portrait) and (max-width: 1100px) {
@@ -757,7 +762,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.22">v1.0.22</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.22">v1.0.23</div>
 </section>
 <section class="screen learning" id="screen-1">
 <div class="topbar"><div class="top-title"><span class="ribbon">🎗</span> Learn About Colon Cancer Screening</div></div>
@@ -1228,7 +1233,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.22';
+  var BUILD_VERSION = '1.0.23';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;
