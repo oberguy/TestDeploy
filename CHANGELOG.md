@@ -1,3 +1,9 @@
+
+## Screening Tests Card Height Adjustment (v1.0.12)
+- Restored the Screening Tests flip cards to their original 285px minimum height.
+- Retained the wider card layout, larger illustrations, aligned title/subtitle rows, and enlarged QR code from v1.0.11.
+- Removed the reduced-height overrides for portrait and shorter landscape displays.
+- Updated the PWA build and cache version so deployed iPads receive the change.
 # Screening Tests Layout Refinement - v1.0.11
 
 - Matched the Screening Tests title and introductory text sizing to the Page 2 visual template.

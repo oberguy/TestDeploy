@@ -358,7 +358,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 }
 </style>
 <style>
-/* Screening Tests refinement v1.0.11 */
+/* Screening Tests refinement v1.0.12 */
 #screen-2 .content{
   padding:26px 34px 12px;
 }
@@ -377,7 +377,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   margin-top:4px;
 }
 #screen-2 .card-grid.three .flip-card{
-  min-height:255px;
+  min-height:285px;
 }
 #screen-2 .test-cards .face.front{
   display:grid;
@@ -429,10 +429,10 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   #screen-2 .content{padding-left:28px;padding-right:28px;}
   #screen-2 .card-grid.three{gap:14px;}
   #screen-2 .medical-icon{width:172px!important;height:108px!important;}
-  #screen-2 .card-grid.three .flip-card{min-height:250px;}
+  #screen-2 .card-grid.three .flip-card{min-height:285px;}
 }
 @media (max-height:760px){
-  #screen-2 .card-grid.three .flip-card{min-height:238px;}
+  #screen-2 .card-grid.three .flip-card{min-height:285px;}
   #screen-2 .test-cards .face.front{grid-template-rows:104px 38px 34px 1fr;padding-top:10px!important;}
   #screen-2 .medical-icon{width:174px!important;height:104px!important;}
   #screen-2 .learn-panel .qr{width:94px;height:94px;}
@@ -910,7 +910,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.11';
+  var BUILD_VERSION = '1.0.12';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

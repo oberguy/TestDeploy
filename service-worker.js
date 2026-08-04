@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.11-screening-tests';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.12-screening-card-height';
 const APP_SHELL = [
   './',
   './index.html',
