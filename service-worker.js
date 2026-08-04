@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.37-ipad-pro-10-5';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.38-ipad-pro-10-5-subtitle';
 const APP_SHELL = [
   './',
   './index.html',

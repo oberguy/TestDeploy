@@ -1,3 +1,10 @@
+# v1.0.38 – iPad Pro 10.5 Subtitle Wrap Fix
+
+- Fixed the Why Screening Matters subtitle wrapping on the iPad Pro 10.5-inch in landscape.
+- Allows the subtitle to wrap naturally within a controlled width.
+- Preserves the shared header typography and all other page layouts.
+- No changes to portrait layouts or other devices.
+
 # v1.0.37 — iPad Pro 10.5 Compatibility
 
 - Added a targeted landscape breakpoint for the iPad Pro 10.5-inch viewport.
