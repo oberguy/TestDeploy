@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.18-who-screened-option1';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.19-who-screened-ipad-enlarge';
 const APP_SHELL = [
   './',
   './index.html',

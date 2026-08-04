@@ -1,3 +1,10 @@
+
+## v1.0.19 – Installed iPad Who Should Be Screened Refinement
+- Slightly enlarged the Average Risk and Increased Risk cards in installed iPad landscape mode.
+- Increased risk badge and descriptive text sizes for easier viewing.
+- Slightly enlarged the provider warning panel, heading, symptom text, and flag icon.
+- Preserved safe spacing between cards, warning panel, and navigation.
+- Safari and desktop layouts remain unchanged.
 # Build v1.0.18 – Who Should Be Screened Option 1
 
 - Kept the Average Risk and Increased Risk cards side by side.
