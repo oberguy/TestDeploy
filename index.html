@@ -941,7 +941,9 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.25">v1.0.26</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.27">v1.0.27</div>
+<div class="admin"><button id="adminBtn" type="button">Admin</button></div>
+<div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
 <section class="screen learning" id="screen-1">
 <div class="topbar"><div class="top-title"><span class="ribbon">🎗</span> Learn About Colon Cancer Screening</div></div>
@@ -1041,8 +1043,6 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <div class="resource-card"><div class="resource-icon">💬</div><h3>About This Kiosk</h3><p class="kiosk-attribution">Developed by researchers at the University of Nebraska Medical Center and the Fred &amp; Pamela Buffett Cancer Center.</p><p>Questions or feedback?</p><p><strong>Jungyoon (JY) Kim</strong></p><p class="phone contact-phone">402.552.7235</p><img alt="QR code to email Jungyoon Kim" class="qr email-qr" data-destination="mailto:jungyoon.kim@unmc.edu" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAEYAQAAAACv9dQhAAABoUlEQVR4nO1ZQYoDMQyTlv7/y9qD7EwCC3tqIphM6TQJggoT27JN4d/n53/IxVzMxfzxfADQS9G+Rq/6NI/zbvtAAMC2jAgRGqdxnLfbBywbgfUVp9M0zqcwEiRAYDvXWT5pGN8Z2tEC+CRg7F8a7wo/ojBslMZ5u33KmyiAonp7gk8ahot+rtCs9TiN83b9o7or7WYVgSi+Xv9wqBy1e3k3Jf00ztsxlCpzyVdHIqwUj/AJwkCqtOWE5QUk+ANJaZx3Yx7pXM4mkaLNc4BPEuZTv0KXpBStD4cOSuO8HSOB7IhjdyM0CvpIzpswrIsyqvXWPi0TX35/qn4XhyqsFO/Ywxt/AHSzZ4QgH97+RmOqcgcoOXHJ69sfA1DxmI5CjtK0Unx9fu9Os6oKc1SugqwSWBrnU/X7KMDGej+fNMw8vwC7KS/OlkvjfEAfdhXm1gawbCI5b8Ks84tWiouV4jifqL8A2KWeVjTAqw9njMAee5EEWYOeZM7fxszzC4doujf2aOg4zgf6Y4CLjKcvhmqOvbw/ts4vvvtfF3Mxb8P8Ahu2xhUygLzrAAAAAElFTkSuQmCC"/><p class="resource-small email-label">Scan to email jungyoon.kim@unmc.edu</p></div>
 </div><div class="nav"><button data-go="5">← Previous</button><button class="next" id="restartBtn">Start Over</button></div></section>
 </div>
-<div class="admin"><button id="adminBtn" type="button">Admin</button></div>
-<div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 
 <div class="session-timeout-overlay" id="sessionTimeoutOverlay" role="dialog" aria-modal="true" aria-labelledby="sessionTimeoutTitle" aria-describedby="sessionTimeoutText">
   <div class="session-timeout-dialog">
@@ -1290,6 +1290,11 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   }
   function showScreen(n) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var adminPanel = document.getElementById('adminPanel');
+    if (n !== 0 && adminPanel) {
+      adminPanel.classList.remove('show');
+      adminPaused = false;
+    }
     var target = document.getElementById('screen-' + n);
     if (target) { target.classList.add('active'); currentScreen = n; recordScreen(n); if (n === 0) { clearInactivityTimers(); hideTimeoutWarning(); } else { resetInactivityTimer(); } }
   }
@@ -1412,7 +1417,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.26';
+  var BUILD_VERSION = '1.0.27';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

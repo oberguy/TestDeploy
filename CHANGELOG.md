@@ -1,3 +1,11 @@
+# v1.0.27 — Welcome-Only Admin Access
+
+- Moved the Admin button and Admin panel into the Welcome screen.
+- Removed Admin controls from all educational and resource pages.
+- Preserved password protection (1026), engagement summary, CSV export, and local-data clearing.
+- Automatically closes the Admin panel when leaving the Welcome screen.
+- Updated the visible version and service-worker cache to v1.0.27.
+
 ## v1.0.26 – Final Page Navigation Alignment
 - Moved the Resources/Thank You navigation to the same full-width bottom rail used by the locked content pages.
 - Matched the exact left/right insets, bottom spacing, button sizing, typography, and alignment.
