@@ -1,3 +1,12 @@
+# Build v1.0.18 – Who Should Be Screened Option 1
+
+- Kept the Average Risk and Increased Risk cards side by side.
+- Moved the healthcare-provider warning upward by reclaiming space from the card area.
+- Avoided negative margins so the provider warning cannot overlap the cards.
+- Reserved the navigation area so the warning remains fully above Previous and Next.
+- Added a targeted compact layout for installed iPad landscape mode.
+- Preserved the locked shared header and previously locked pages.
+
 
 ## v1.0.16 – iPad Standalone Comparison Table Fill
 - Kept the Safari comparison layout unchanged.

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.17-cost-insurance-readability';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.18-who-screened-option1';
 const APP_SHELL = [
   './',
   './index.html',
