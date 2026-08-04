@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.12-screening-card-height';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.13-title-alignment';
 const APP_SHELL = [
   './',
   './index.html',

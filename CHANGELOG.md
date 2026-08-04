@@ -1,3 +1,9 @@
+## Screening Tests Title Alignment (v1.0.13)
+- Matched the Screening Tests content top padding to the Why Screening Matters page.
+- Matched the title bottom spacing to the Page 2 visual template.
+- Preserved the larger cards, original card height, aligned titles, and enlarged QR code.
+- Updated the app and service-worker cache version for deployment.
+
 
 ## Screening Tests Card Height Adjustment (v1.0.12)
 - Restored the Screening Tests flip cards to their original 285px minimum height.
