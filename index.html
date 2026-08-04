@@ -481,6 +481,55 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   .page-header-subtitle { white-space: normal !important; }
 }
 </style>
+
+<style id="ipad-standalone-compare-fix-v1015">
+/* iPad Home Screen (standalone) uses a shorter viewport than Safari. */
+@media (display-mode: standalone) {
+  html, body, .app { height: 100dvh; min-height: 100dvh; }
+  .screen { height: 100dvh; }
+}
+@media (display-mode: standalone) and (orientation: landscape) and (max-height: 900px) {
+  #screen-3 .content.compare-content {
+    padding-top: 12px !important;
+    padding-bottom: 6px !important;
+  }
+  #screen-3 .page-header {
+    margin-bottom: 4px !important;
+  }
+  #screen-3 .comparison-table {
+    font-size: 16px !important;
+  }
+  #screen-3 .comparison-table thead th {
+    font-size: 18px !important;
+  }
+  #screen-3 .comparison-table tbody th {
+    font-size: 16px !important;
+  }
+  #screen-3 .comparison-table th,
+  #screen-3 .comparison-table td {
+    padding: 6px 8px !important;
+    line-height: 1.16 !important;
+  }
+  #screen-3 .insurance-box {
+    margin-top: 5px !important;
+    padding: 5px 10px !important;
+    min-height: 0 !important;
+  }
+  #screen-3 .insurance-box strong { font-size: 16px !important; }
+  #screen-3 .insurance-box span { font-size: 14px !important; }
+  #screen-3 .coverage-label { font-size: 14px !important; }
+  #screen-3 .small-qr {
+    width: 66px !important;
+    height: 66px !important;
+    flex-basis: 66px !important;
+  }
+  #screen-3 + .nav,
+  #screen-3 .nav {
+    height: 76px;
+    padding-bottom: 16px;
+  }
+}
+</style>
 </head>
 <body>
 <div class="app">

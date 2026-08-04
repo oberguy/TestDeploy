@@ -1,3 +1,10 @@
+# v1.0.15 – iPad Home Screen Comparison Fix
+
+- Added dynamic viewport sizing for installed standalone mode.
+- Added a compact comparison-table layout only for iPad Home Screen landscape mode.
+- Left the Safari browser layout unchanged.
+- Reduced table and insurance-panel spacing only when the standalone viewport is short.
+
 ## Screening Tests Title Alignment (v1.0.13)
 - Matched the Screening Tests content top padding to the Why Screening Matters page.
 - Matched the title bottom spacing to the Page 2 visual template.

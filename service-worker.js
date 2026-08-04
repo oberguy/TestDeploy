@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.14-shared-header';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.15-ipad-standalone-compare';
 const APP_SHELL = [
   './',
   './index.html',
