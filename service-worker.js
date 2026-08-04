@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.10-ui-refresh';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.11-screening-tests';
 const APP_SHELL = [
   './',
   './index.html',

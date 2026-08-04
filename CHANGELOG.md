@@ -1,3 +1,13 @@
+# Screening Tests Layout Refinement - v1.0.11
+
+- Matched the Screening Tests title and introductory text sizing to the Page 2 visual template.
+- Increased the usable width of all three screening-test cards by reducing outer padding and card gaps.
+- Reduced card height to remove unused vertical space.
+- Enlarged the screening-test illustrations.
+- Added a consistent subtitle row so Colonoscopy, FIT, and FIT-DNA headings align evenly.
+- Increased the American Cancer Society QR code by approximately 15 percent.
+- Updated the PWA build and service-worker cache version.
+
 # UI Refresh - v1.0.10
 
 - Replaced numbered progress circles with completed checkmarks, a solid current-page marker, and empty upcoming markers.

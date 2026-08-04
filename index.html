@@ -356,7 +356,89 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   .step:before{top:12px;}
   #screen-1 .content{padding-left:28px!important;padding-right:28px!important;}
 }
-</style></head>
+</style>
+<style>
+/* Screening Tests refinement v1.0.11 */
+#screen-2 .content{
+  padding:26px 34px 12px;
+}
+#screen-2 h2{
+  font-size:40px;
+  margin-bottom:9px;
+}
+#screen-2 .screen3-intro{
+  font-size:26px;
+  line-height:1.22;
+  margin-bottom:12px;
+}
+#screen-2 .card-grid.three{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin-top:4px;
+}
+#screen-2 .card-grid.three .flip-card{
+  min-height:255px;
+}
+#screen-2 .test-cards .face.front{
+  display:grid;
+  grid-template-rows:118px 42px 38px 1fr;
+  align-items:center;
+  justify-items:center;
+  justify-content:stretch;
+  padding:14px 20px 14px!important;
+}
+#screen-2 .medical-icon{
+  width:190px!important;
+  height:118px!important;
+  margin:0 auto!important;
+}
+#screen-2 .card-title{
+  width:100%;
+  min-height:42px;
+  margin:0!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  line-height:1.08;
+}
+#screen-2 .card-subtitle{
+  width:100%;
+  min-height:38px;
+  margin:0!important;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  text-align:center;
+  font-size:16px;
+  line-height:1.15;
+}
+#screen-2 .flip-hint{
+  align-self:end;
+  margin:0!important;
+  padding:0 0 2px!important;
+}
+#screen-2 .learn-panel{
+  margin-top:10px;
+}
+#screen-2 .learn-panel .qr{
+  width:99px;
+  height:99px;
+}
+@media (orientation:portrait) and (max-width:1100px){
+  #screen-2 .content{padding-left:28px;padding-right:28px;}
+  #screen-2 .card-grid.three{gap:14px;}
+  #screen-2 .medical-icon{width:172px!important;height:108px!important;}
+  #screen-2 .card-grid.three .flip-card{min-height:250px;}
+}
+@media (max-height:760px){
+  #screen-2 .card-grid.three .flip-card{min-height:238px;}
+  #screen-2 .test-cards .face.front{grid-template-rows:104px 38px 34px 1fr;padding-top:10px!important;}
+  #screen-2 .medical-icon{width:174px!important;height:104px!important;}
+  #screen-2 .learn-panel .qr{width:94px;height:94px;}
+}
+</style>
+</head>
 <body>
 <div class="app">
 <section class="screen welcome active" id="screen-0">
@@ -390,7 +472,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <path d="M28 93c23-5 29-23 43-37 17-17 38-15 49-2 11 13 8 31-4 42-10 9-25 11-35 3" fill="none" stroke="#0b8793" stroke-linecap="round" stroke-width="7"></path>
 <circle cx="28" cy="94" fill="#f4a340" r="11" stroke="#0b3d7a" stroke-width="4"></circle>
 <path d="M117 57c12 3 22 10 28 20" fill="none" stroke="#0b3d7a" stroke-dasharray="5 5" stroke-width="4"></path>
-</svg></div><div class="card-title">Colonoscopy</div><div class="flip-hint">↻ Flip to learn more</div></div><div class="face back"><div class="back-title">Colonoscopy</div><p><strong>Examines the entire colon and rectum using a flexible camera.</strong></p><ul><li>Polyps can be removed during the procedure.</li><li>Requires bowel preparation.</li><li>Usually repeated every 10 years if results are normal.</li></ul><div class="tap-back">↻ Flip back</div></div></div></div>
+</svg></div><div class="card-title">Colonoscopy</div><div class="card-subtitle" aria-hidden="true">&nbsp;</div><div class="flip-hint">↻ Flip to learn more</div></div><div class="face back"><div class="back-title">Colonoscopy</div><p><strong>Examines the entire colon and rectum using a flexible camera.</strong></p><ul><li>Polyps can be removed during the procedure.</li><li>Requires bowel preparation.</li><li>Usually repeated every 10 years if results are normal.</li></ul><div class="tap-back">↻ Flip back</div></div></div></div>
 <div class="flip-card" data-card="fit"><div class="flip-inner"><div class="face front"><div class="medical-icon"><svg aria-label="FIT stool collection kit illustration" role="img" viewbox="0 0 220 130">
 <rect fill="#eef5fb" height="78" rx="9" stroke="#0b3d7a" stroke-width="4" width="92" x="26" y="25"></rect>
 <rect fill="#0b8793" height="18" rx="4" width="72" x="36" y="35"></rect>
@@ -828,7 +910,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.10';
+  var BUILD_VERSION = '1.0.11';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;
