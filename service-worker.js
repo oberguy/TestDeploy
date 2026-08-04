@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.28-ipad-portrait';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.29-portrait-table-fit';
 const APP_SHELL = [
   './',
   './index.html',

@@ -1,3 +1,11 @@
+# v1.0.29 — iPad Portrait Comparison Table Fix
+
+- Removed the fixed 980px portrait table width that clipped the FIT-DNA column.
+- Made the comparison table fit the available iPad portrait content width.
+- Assigned portrait-specific column proportions for the row labels and three screening options.
+- Slightly compacted portrait-only table text and cell padding to preserve readability.
+- Landscape layouts remain unchanged.
+
 # v1.0.28 — Dedicated iPad Portrait Support
 
 - Added a separate iPad portrait breakpoint for widths from 700px through 1100px.
