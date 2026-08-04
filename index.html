@@ -136,7 +136,7 @@ h2 { font-size:44px; line-height:1.05; color:var(--navy); margin:0 0 12px; }
 #reloadUpdateBtn { background:var(--navy); color:#fff; }
 #laterUpdateBtn { background:#e6edf3; color:var(--navy); }
 
-/* v1.0.34 kiosk touch controls */
+/* v1.0.35 kiosk touch controls */
 html, body {
   -webkit-user-select: none;
   user-select: none;
@@ -1354,7 +1354,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
 
 <style id="ipad-portrait-resources-v1-0-33">
-/* v1.0.34: allow the portrait Resources middle section to grow with its tiles. */
+/* v1.0.35: allow the portrait Resources middle section to grow with its tiles. */
 @media (orientation: portrait) and (min-width: 700px) and (max-width: 1100px) {
   html, body {
     height:auto !important;
@@ -1420,7 +1420,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.33">v1.0.34</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.33">v1.0.35</div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
@@ -1562,6 +1562,9 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var countdownValue = 10;
   var adminPaused = false;
   var adminPassword = '1026';
+  var orientationReloadKey = 'crc_kiosk_orientation_restore';
+  var orientationReloadTimer = null;
+  var lastKnownOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
 
   var dbName = 'crc_kiosk_engagement';
   var dbVersion = 1;
@@ -1752,6 +1755,48 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     inactivityTimer = setTimeout(showTimeoutWarning, inactivityMs - warningMs);
   }
 
+  function saveOrientationRestoreState() {
+    var state = {
+      screen: currentScreen,
+      sessionId: currentSession ? currentSession.session_id : '',
+      savedAt: Date.now()
+    };
+    try { sessionStorage.setItem(orientationReloadKey, JSON.stringify(state)); } catch (e) {}
+  }
+  function scheduleOrientationRefresh() {
+    var orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+    if (orientation === lastKnownOrientation) return;
+    lastKnownOrientation = orientation;
+    if (orientationReloadTimer) clearTimeout(orientationReloadTimer);
+    orientationReloadTimer = setTimeout(function() {
+      saveOrientationRestoreState();
+      window.location.reload();
+    }, 450);
+  }
+  async function restoreAfterOrientationChange() {
+    var raw = null;
+    try {
+      raw = sessionStorage.getItem(orientationReloadKey);
+      sessionStorage.removeItem(orientationReloadKey);
+    } catch (e) {}
+    if (!raw) return false;
+    var state;
+    try { state = JSON.parse(raw); } catch (e) { return false; }
+    if (!state || Date.now() - Number(state.savedAt || 0) > 15000) return false;
+    await storageReady;
+    if (state.sessionId) {
+      currentSession = sessionsCache.find(function(session) {
+        return session.session_id === state.sessionId;
+      }) || null;
+    }
+    document.querySelectorAll('.flip-card.flipped').forEach(function(card) {
+      card.classList.remove('flipped');
+    });
+    showScreen(Math.max(0, Math.min(totalScreens - 1, Number(state.screen || 0))));
+    window.scrollTo(0, 0);
+    return true;
+  }
+
   function renderProgress() {
     document.querySelectorAll('.progress').forEach(function(box) {
       var active = parseInt(box.getAttribute('data-progress'), 10);
@@ -1887,6 +1932,15 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
         resetInactivityTimer();
       }, {passive:true});
     });
+    restoreAfterOrientationChange();
+    window.addEventListener('orientationchange', scheduleOrientationRefresh);
+    if (window.screen && window.screen.orientation && window.screen.orientation.addEventListener) {
+      window.screen.orientation.addEventListener('change', scheduleOrientationRefresh);
+    }
+    window.addEventListener('resize', function() {
+      if (orientationReloadTimer) clearTimeout(orientationReloadTimer);
+      orientationReloadTimer = setTimeout(scheduleOrientationRefresh, 150);
+    });
   });
 })();
 </script>
@@ -1896,7 +1950,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.34';
+  var BUILD_VERSION = '1.0.35';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

@@ -1,3 +1,12 @@
+# Orientation Refresh - v1.0.35
+
+- Added automatic refresh after switching between portrait and landscape.
+- Restores the visitor to the same kiosk page after rotation.
+- Preserves the active session and completed engagement statistics.
+- Resets any open flip cards to their front side after rotation.
+- Debounces iPad orientation and resize events to prevent repeated reload loops.
+- Scrolls the restored page to the top after rotation.
+
 # v1.0.34 — Kiosk Zoom Controls
 
 - Disabled pinch-to-zoom with a locked viewport scale.

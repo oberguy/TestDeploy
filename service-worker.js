@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.34-no-zoom';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.35-orientation-refresh';
 const APP_SHELL = [
   './',
   './index.html',
