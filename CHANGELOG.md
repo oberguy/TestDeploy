@@ -1,3 +1,12 @@
+# v1.0.34 — Kiosk Zoom Controls
+
+- Disabled pinch-to-zoom with a locked viewport scale.
+- Prevented Safari gesture zoom events on iPad and iPhone.
+- Prevented double-tap zoom while preserving single taps.
+- Disabled text selection, touch callouts, and tap highlights for kiosk content.
+- Preserved text selection inside form fields and preserved normal page/content scrolling.
+- Updated the visible version and service-worker cache.
+
 # v1.0.33 — Portrait Resources Container Growth
 
 - Removed the fixed-height portrait Resources tile region.
