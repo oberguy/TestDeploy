@@ -1,3 +1,11 @@
+# Common Questions Layout - v1.0.22
+
+- Reduced FAQ card height by approximately 17 percent.
+- Slightly widened the FAQ card columns by reducing side padding and column gaps.
+- Reduced the gap between the shared subtitle and the card grid.
+- Ensured the lower card row stays fully above the locked Previous/Next navigation.
+- Left emoji size, subtitle wording, shared header, and navigation styling unchanged.
+
 # v1.0.21 — Common Questions Shared Header
 
 - Applied the locked shared header styling to the Common Questions page.
