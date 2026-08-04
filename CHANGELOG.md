@@ -1,3 +1,8 @@
+## v1.0.26 – Final Page Navigation Alignment
+- Moved the Resources/Thank You navigation to the same full-width bottom rail used by the locked content pages.
+- Matched the exact left/right insets, bottom spacing, button sizing, typography, and alignment.
+- Removed the effect of the final page content padding on navigation placement.
+
 # v1.0.25 — Resources / Thank You Global Layout Fix
 
 - Reduced the three resource-card heights globally across desktop, Safari, and installed iPad Home Screen mode.
