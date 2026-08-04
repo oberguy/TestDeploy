@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.9-ipad-update';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.10-ui-refresh';
 const APP_SHELL = [
   './',
   './index.html',

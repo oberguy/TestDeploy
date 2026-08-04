@@ -1,3 +1,13 @@
+# UI Refresh - v1.0.10
+
+- Replaced numbered progress circles with completed checkmarks, a solid current-page marker, and empty upcoming markers.
+- Added a thin connecting progress line and reduced the progress area's vertical height.
+- Added accessible progress status labels and `aria-current` for the active page.
+- Reduced the Why Screening Matters title size.
+- Widened the Page 2 content area and tightened vertical spacing.
+- Increased the embedded Page 2 infographic approximately 8 percent, which also enlarges its Good News banner.
+- Updated the service-worker cache and build version for deployment.
+
 # PWA iPad Update Reliability - v1.0.9
 
 - Disabled service-worker HTTP cache reuse with `updateViaCache: 'none'`.
