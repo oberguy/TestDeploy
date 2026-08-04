@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.35-orientation-refresh';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.36-timeout-tracking';
 const APP_SHELL = [
   './',
   './index.html',

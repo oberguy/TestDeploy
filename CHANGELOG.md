@@ -1,3 +1,11 @@
+# v1.0.36 - Timeout Engagement Tracking Fix
+
+- Timed-out sessions are now finalized and saved as incomplete sessions instead of being deleted.
+- Timeout records now include end time and calculated duration.
+- Sessions started, incomplete sessions, and last-session reporting now update after an inactivity timeout.
+- Completed session totals remain unchanged when a session times out.
+- Existing return-to-Welcome behavior is preserved.
+
 # Orientation Refresh - v1.0.35
 
 - Added automatic refresh after switching between portrait and landscape.
