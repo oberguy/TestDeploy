@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.29-portrait-table-fit';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.30-portrait-resources';
 const APP_SHELL = [
   './',
   './index.html',

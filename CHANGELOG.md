@@ -1,3 +1,12 @@
+# v1.0.30 — iPad Portrait Resources Fix
+
+- Rebuilt the Resources / Thank You page for iPad portrait using a stable 2 + 1 full-width card layout.
+- Made the third About This Kiosk card span the full portrait width.
+- Prevented card text and QR codes from spilling outside their tiles.
+- Kept the navigation in a dedicated bottom row so it no longer covers the third card.
+- Reduced portrait-only hero and card heights to better fill the iPad viewport.
+- Left landscape, desktop, and phone layouts unchanged.
+
 # v1.0.29 — iPad Portrait Comparison Table Fix
 
 - Removed the fixed 980px portrait table width that clipped the FIT-DNA column.
