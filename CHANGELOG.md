@@ -1,3 +1,11 @@
+# v1.0.32 — Portrait Resources Content-Driven Cards
+
+- Replaced fixed portrait Resources card heights with content-driven sizing.
+- Kept the two-plus-one portrait card grid.
+- Ensured the second row begins after the tallest first-row card.
+- Added an internal scroll area above the locked navigation when portrait content exceeds the available height.
+- Prevented card overlap and clipping while preserving landscape layouts.
+
 # v1.0.31 — Portrait Resources Card Grid
 
 - Matched the Resources portrait card layout to the Screening Tests 2 + 1 pattern.
