@@ -85,3 +85,10 @@
 - Fixed inactivity timer cleanup to prevent overlapping warning countdowns.
 - Ensured timeout and Return Now close dialogs/admin, clear active UI state, scroll to top, and return to the Welcome screen.
 - Preserves completed engagement statistics while clearing only the active timed-out session.
+
+## Shared Page Header Component (v1.0.14)
+- Added one shared header component for content Pages 2 through 6.
+- Standardized title size, weight, underline, top spacing, and left alignment.
+- Standardized subtitle size, weight, line height, and spacing.
+- Page 4 now aligns to the same header baseline as Pages 2 and 3.
+- Updated the PWA build and cache version to v1.0.14.

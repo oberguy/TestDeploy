@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.13-title-alignment';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.14-shared-header';
 const APP_SHELL = [
   './',
   './index.html',
