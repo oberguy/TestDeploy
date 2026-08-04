@@ -674,7 +674,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 </style>
 
 <style id="common-questions-shared-header-v1021">
-/* v1.0.23: Common Questions now uses the locked shared header without page-specific callout styling. */
+/* v1.0.24: Common Questions now uses the locked shared header without page-specific callout styling. */
 #screen-5 .page-header {
   margin-bottom: 0 !important;
 }
@@ -701,7 +701,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 </style>
 
 <style id="common-questions-layout-v1023">
-/* v1.0.23: restore original FAQ height and preserve navigation clearance. */
+/* v1.0.24: restore original FAQ height and preserve navigation clearance. */
 #screen-5 .content {
   padding-left: 38px !important;
   padding-right: 38px !important;
@@ -753,6 +753,110 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   #screen-5 .content { padding-left: 28px !important; padding-right: 28px !important; }
 }
 </style>
+
+<style id="closing-page-v1024">
+/* v1.0.24: final Resources / Thank You page refinements. */
+#screen-6.closing {
+  padding: 0 46px 0 !important;
+}
+#screen-6 .closing-hero {
+  height: 33% !important;
+  min-height: 235px !important;
+}
+#screen-6 .closing-copy {
+  padding-top: 22px !important;
+  padding-bottom: 16px !important;
+}
+#screen-6 .closing-kicker {
+  margin-bottom: 14px !important;
+}
+#screen-6 .closing-cards {
+  margin-top: 14px !important;
+  gap: 18px !important;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+#screen-6 .closing-cards .resource-card {
+  min-height: 245px !important;
+  padding: 18px 20px !important;
+  justify-content: flex-start !important;
+}
+#screen-6 .resource-icon {
+  flex: 0 0 56px;
+  width: 56px !important;
+  height: 56px !important;
+  font-size: 30px !important;
+  margin-bottom: 8px !important;
+}
+#screen-6 .closing-cards .resource-card h3 {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px !important;
+}
+#screen-6 .closing-cards .phone {
+  font-size: 28px !important;
+  line-height: 1.1 !important;
+}
+#screen-6 .closing-cards .contact-phone {
+  font-size: 25px !important;
+}
+#screen-6 .closing-cards .qr {
+  width: 96px !important;
+  height: 96px !important;
+  border-width: 5px !important;
+  margin: auto 0 6px !important;
+  flex: 0 0 96px;
+}
+#screen-6 .closing-cards .email-qr {
+  width: 89px !important;
+  height: 89px !important;
+  flex-basis: 89px;
+  margin: auto 0 5px !important;
+}
+#screen-6 .closing-cards .resource-small {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0 !important;
+}
+#screen-6 .closing-cards .email-label {
+  min-height: 28px;
+}
+/* Match the locked navigation position used by the content pages. */
+#screen-6 .nav {
+  width: calc(100% + 92px) !important;
+  height: 86px !important;
+  margin: auto 0 0 -46px !important;
+  padding: 0 46px 26px !important;
+  flex: 0 0 86px;
+  position: relative;
+  z-index: 5;
+}
+@media (display-mode: standalone) and (orientation: landscape) and (max-height: 900px) {
+  #screen-6 .closing-hero {
+    height: 31% !important;
+    min-height: 225px !important;
+  }
+  #screen-6 .closing-cards .resource-card {
+    min-height: 235px !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+  #screen-6 .closing-cards .qr {
+    width: 92px !important;
+    height: 92px !important;
+    flex-basis: 92px;
+  }
+  #screen-6 .closing-cards .email-qr {
+    width: 86px !important;
+    height: 86px !important;
+    flex-basis: 86px;
+  }
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -762,7 +866,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.22">v1.0.23</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.24">v1.0.24</div>
 </section>
 <section class="screen learning" id="screen-1">
 <div class="topbar"><div class="top-title"><span class="ribbon">🎗</span> Learn About Colon Cancer Screening</div></div>
@@ -1233,7 +1337,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.23';
+  var BUILD_VERSION = '1.0.24';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

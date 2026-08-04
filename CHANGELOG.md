@@ -1,3 +1,12 @@
+# v1.0.24 — Resources / Thank You Page
+
+- Reduced the closing hero height by approximately 15–20%.
+- Enlarged and vertically aligned the three resource cards.
+- Increased all QR-code sizes and emphasized the phone numbers.
+- Aligned icons, headings, QR codes, and footer labels across the cards.
+- Positioned Previous and Start Over exactly like the locked navigation used on prior pages.
+- Preserved clearance between the cards and navigation.
+
 
 ## v1.0.23 – Common Questions Card Height
 - Restored the FAQ cards to their original 220px minimum height for readable back-side answers.

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.23-common-questions-height';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.24-closing-page';
 const APP_SHELL = [
   './',
   './index.html',
