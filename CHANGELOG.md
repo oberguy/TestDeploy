@@ -1,3 +1,14 @@
+# v1.0.41 – Two-Testimonial Opening Playlist
+
+- Added the full compressed Quintin Griffin testimonial as the second opening video.
+- Opening playlist now plays Juanita Thomas → Quintin Griffin → repeat.
+- Removed the single-video loop attribute and added playlist sequencing when each testimonial ends.
+- **Touch to Begin** remains available during either testimonial.
+- A 60-second kiosk timeout returns to the beginning of the Juanita Thomas testimonial.
+- The second video and its poster are pre-cached for offline playback.
+- Orientation refresh now preserves which testimonial is playing and its playback position.
+- Bumped application and service-worker cache version to v1.0.41.
+
 # v1.0.40 – Welcome Screen Timeout Fix
 
 - The 60-second inactivity timer now also runs on the Welcome screen.

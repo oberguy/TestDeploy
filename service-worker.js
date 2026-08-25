@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.40-welcome-timeout';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.41-two-testimonial-playlist';
 const APP_SHELL = [
   './',
   './index.html',
@@ -7,7 +7,9 @@ const APP_SHELL = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './testimonial.mp4',
-  './testimonial_poster.jpg'
+  './testimonial_poster.jpg',
+  './testimonial_quintin.mp4',
+  './testimonial_quintin_poster.jpg'
 ];
 
 self.addEventListener('install', event => {
