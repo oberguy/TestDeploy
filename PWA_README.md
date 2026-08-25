@@ -14,3 +14,6 @@ Upload the contents of this folder to the root of a secure HTTPS website, such a
 3. Close and reopen the installed app with Wi-Fi disabled.
 
 The kiosk content and engagement data remain local to the device. The Screen Wake Lock API is requested while the kiosk is visible; iOS may still apply operating-system power-management rules.
+
+## Opening testimonial video
+The bundled `testimonial.mp4` is pre-cached for offline use. On iPadOS, the first audible playback may require the visitor to tap **Play Video**. The 60-second inactivity timeout returns to the video screen and attempts to restart playback with audio without reloading the app.

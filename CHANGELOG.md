@@ -1,3 +1,16 @@
+# v1.0.39 – Opening Testimonial Video
+
+- Added the full Juanita Thomas BEAT Cancer testimonial as the opening kiosk screen.
+- Uses a compressed 720p H.264/AAC MP4 for iPad-friendly playback and offline caching.
+- Added a large **Play Video** action so the first visitor interaction can enable audio on iPadOS.
+- Added an always-available **Touch to Begin** button that pauses the video and opens the existing Welcome screen.
+- The testimonial loops after it reaches the end when playback was started successfully.
+- The 60-second kiosk timeout now records the active session as incomplete and returns to the opening video without reloading the PWA.
+- On timeout, the app resets the testimonial to 0:00 and attempts to restart it with audio; if iPadOS blocks playback, the Play Video prompt is shown immediately.
+- Orientation refresh now remembers whether the opening video was active and its playback position.
+- Added service-worker byte-range support so the cached MP4 can play while offline.
+- Preserved the existing Welcome screen, Admin panel, engagement tracking, accessibility work, no-zoom behavior, and iPad layout fixes.
+
 # v1.0.38 – iPad Pro 10.5 Subtitle Wrap Fix
 
 - Fixed the Why Screening Matters subtitle wrapping on the iPad Pro 10.5-inch in landscape.
