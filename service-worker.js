@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.39-testimonial-video';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.40-welcome-timeout';
 const APP_SHELL = [
   './',
   './index.html',

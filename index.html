@@ -1441,7 +1441,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
 
 <style>
-/* v1.0.39: Opening testimonial video / attract screen */
+/* v1.0.40: Opening testimonial video / attract screen */
 .attract-screen {
   display:none;
   position:relative;
@@ -1549,7 +1549,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.39">v1.0.39</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.40">v1.0.40</div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
@@ -1920,7 +1920,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   }
   function showTimeoutWarning() {
     inactivityTimer = null;
-    if (!currentSession || currentScreen === 0 || adminPaused) return;
+    if (currentScreen < 0 || adminPaused) return;
     if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
     var overlay = document.getElementById('sessionTimeoutOverlay');
     var count = document.getElementById('sessionCountdown');
@@ -1938,7 +1938,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
   }
   function resetInactivityTimer() {
-    if (!currentSession || currentScreen === 0 || adminPaused) return;
+    if (currentScreen < 0 || adminPaused) return;
     clearInactivityTimers();
     hideTimeoutWarning();
     inactivityTimer = setTimeout(showTimeoutWarning, inactivityMs - warningMs);
@@ -2021,7 +2021,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
       adminPaused = false;
     }
     var target = document.getElementById('screen-' + n);
-    if (target) { target.classList.add('active'); currentScreen = n; recordScreen(n); if (n === 0) { clearInactivityTimers(); hideTimeoutWarning(); } else { resetInactivityTimer(); } }
+    if (target) { target.classList.add('active'); currentScreen = n; recordScreen(n); resetInactivityTimer(); }
   }
   function csvEscape(v) {
     v = String(v == null ? '' : v);
@@ -2163,7 +2163,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.39';
+  var BUILD_VERSION = '1.0.40';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

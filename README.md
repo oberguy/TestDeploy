@@ -1,14 +1,16 @@
-# CRC Community Education Kiosk v1.0 (Release Candidate)
+# CRC Community Education Kiosk v1.0.40
 
-This package contains the HTML kiosk and supporting documentation for pilot testing.
+This package contains the iPad-focused PWA kiosk and supporting documentation for pilot testing.
 
-Contents
-- CRC_Community_Education_Kiosk_v1.0_Release_Candidate.html
-- README.md
-- CHANGELOG.md
-- Programmer_Notes.md
-- QA_Checklist.md
-- Package_Summary.docx
+Key deployment files
+- `index.html`
+- `manifest.webmanifest`
+- `service-worker.js`
+- `testimonial.mp4`
+- `testimonial_poster.jpg`
+- `icons/`
 
-Target device:
-- 10-inch landscape iPad
+Build 1.0.40 fixes inactivity behavior on the Welcome screen: after 60 seconds without interaction, the kiosk returns to the opening testimonial video. No incomplete session is recorded unless a visitor had actually started a kiosk session.
+
+Target device
+- iPad kiosk in landscape or portrait

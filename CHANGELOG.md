@@ -1,3 +1,11 @@
+# v1.0.40 – Welcome Screen Timeout Fix
+
+- The 60-second inactivity timer now also runs on the Welcome screen.
+- If the Welcome screen is left untouched, the 10-second warning appears and the kiosk returns to the opening testimonial video.
+- Timing out from Welcome does not create an incomplete session because a visitor session has not started yet.
+- Active-session timeouts continue to be recorded as incomplete sessions.
+- Returning to the video still occurs without reloading the PWA and attempts to restart the testimonial with audio.
+
 # v1.0.39 – Opening Testimonial Video
 
 - Added the full Juanita Thomas BEAT Cancer testimonial as the opening kiosk screen.
