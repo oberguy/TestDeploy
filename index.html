@@ -1441,7 +1441,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
 
 <style>
-/* v1.0.41: Opening testimonial video playlist / attract screen */
+/* v1.0.42: iPad-safe combined testimonial video / attract screen */
 .attract-screen {
   display:none;
   position:relative;
@@ -1532,14 +1532,14 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <body>
 <div class="app">
 <section class="attract-screen active" id="attractScreen" aria-label="Opening testimonial video">
-  <video class="attract-video" id="testimonialVideo" preload="auto" playsinline webkit-playsinline poster="./testimonial_poster.jpg" data-playlist-index="0">
-    <source src="./testimonial.mp4" type="video/mp4"/>
+  <video class="attract-video" id="testimonialVideo" preload="metadata" playsinline webkit-playsinline poster="./testimonial_poster.jpg" loop>
+    <source src="./testimonial_playlist.mp4" type="video/mp4"/>
     Your browser does not support the testimonial video.
   </video>
   <div class="attract-play-overlay" id="attractPlayOverlay">
     <p class="attract-play-title">Hear personal stories about colorectal cancer screening</p>
-    <button class="attract-play-button" id="playTestimonialBtn" type="button">Play Videos</button>
-    <p class="attract-audio-note">Tap Play Videos to hear the testimonials with sound.</p>
+    <button class="attract-play-button" id="playTestimonialBtn" type="button">Play Testimonials</button>
+    <p class="attract-audio-note">Tap Play Testimonials to hear the testimonials with sound.</p>
   </div>
   <button class="attract-begin-button" id="touchToBeginBtn" type="button">Touch to Begin</button>
 </section>
@@ -1549,7 +1549,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.41">v1.0.41</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.42">v1.0.42</div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
@@ -1849,87 +1849,28 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     if (!overlay) return;
     overlay.classList.toggle('hidden', !show);
   }
-  var testimonialPlaylist = [
-    { src: './testimonial.mp4', poster: './testimonial_poster.jpg', label: 'Juanita Thomas testimonial' },
-    { src: './testimonial_quintin.mp4', poster: './testimonial_quintin_poster.jpg', label: 'Quintin Griffin testimonial' }
-  ];
-  var currentTestimonialIndex = 0;
-
-  function normalizeTestimonialIndex(index) {
-    var n = Number(index);
-    if (!isFinite(n)) n = 0;
-    n = Math.floor(n);
-    return ((n % testimonialPlaylist.length) + testimonialPlaylist.length) % testimonialPlaylist.length;
-  }
-
-  function setTestimonialSource(index, startAt) {
+  function attemptTestimonialPlayback(startAt) {
     var video = document.getElementById('testimonialVideo');
     if (!video) return Promise.reject(new Error('Testimonial video unavailable'));
-    var targetIndex = normalizeTestimonialIndex(index);
-    var item = testimonialPlaylist[targetIndex];
-    var existingIndex = Number(video.getAttribute('data-playlist-index'));
-    currentTestimonialIndex = targetIndex;
-
-    function setPosition() {
-      if (typeof startAt === 'number' && isFinite(startAt)) {
-        try { video.currentTime = Math.max(0, startAt); } catch (e) {}
-      }
-    }
-
-    if (existingIndex !== targetIndex) {
-      try { video.pause(); } catch (e) {}
-      video.setAttribute('data-playlist-index', String(targetIndex));
-      video.poster = item.poster;
-      video.src = item.src;
-      video.setAttribute('aria-label', item.label);
-      video.load();
-      return new Promise(function(resolve) {
-        if (video.readyState >= 1) {
-          setPosition();
-          resolve(video);
-          return;
-        }
-        var onMetadata = function() {
-          video.removeEventListener('loadedmetadata', onMetadata);
-          setPosition();
-          resolve(video);
-        };
-        video.addEventListener('loadedmetadata', onMetadata);
+    try {
+      if (typeof startAt === 'number' && isFinite(startAt)) video.currentTime = Math.max(0, startAt);
+      video.muted = false;
+      video.volume = 1;
+    } catch (e) {}
+    var result;
+    // Keep play() directly in the user-click call path for iPadOS audible-media policy.
+    try { result = video.play(); } catch (e) { setAttractPlayOverlay(true); return Promise.reject(e); }
+    if (result && typeof result.then === 'function') {
+      return result.then(function() { setAttractPlayOverlay(false); }).catch(function(err) {
+        setAttractPlayOverlay(true);
+        throw err;
       });
     }
-
-    video.poster = item.poster;
-    video.setAttribute('aria-label', item.label);
-    setPosition();
-    return Promise.resolve(video);
+    setAttractPlayOverlay(false);
+    return Promise.resolve();
   }
 
-  function attemptTestimonialPlayback(startAt, playlistIndex) {
-    var targetIndex = typeof playlistIndex === 'number' ? playlistIndex : currentTestimonialIndex;
-    return setTestimonialSource(targetIndex, startAt).then(function(video) {
-      try {
-        video.muted = false;
-        video.volume = 1;
-      } catch (e) {}
-      var result;
-      try { result = video.play(); } catch (e) { setAttractPlayOverlay(true); throw e; }
-      if (result && typeof result.then === 'function') {
-        return result.then(function() { setAttractPlayOverlay(false); return video; }).catch(function(err) {
-          setAttractPlayOverlay(true);
-          throw err;
-        });
-      }
-      setAttractPlayOverlay(false);
-      return video;
-    });
-  }
-
-  function playNextTestimonial() {
-    var nextIndex = normalizeTestimonialIndex(currentTestimonialIndex + 1);
-    attemptTestimonialPlayback(0, nextIndex).catch(function() {});
-  }
-
-  function showAttractVideo(tryAutoplay, startAt, playlistIndex) {
+  function showAttractVideo(tryAutoplay, startAt) {
     clearInactivityTimers();
     hideTimeoutWarning();
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
@@ -1942,16 +1883,14 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     currentScreen = -1;
     window.scrollTo(0, 0);
     if (!video) return;
-    var targetIndex = typeof playlistIndex === 'number' ? playlistIndex : 0;
+    try {
+      video.pause();
+      video.currentTime = typeof startAt === 'number' && isFinite(startAt) ? Math.max(0, startAt) : 0;
+      video.muted = false;
+      video.volume = 1;
+    } catch (e) {}
     setAttractPlayOverlay(true);
-    setTestimonialSource(targetIndex, typeof startAt === 'number' ? startAt : 0).then(function(v) {
-      try {
-        v.pause();
-        v.muted = false;
-        v.volume = 1;
-      } catch (e) {}
-      if (tryAutoplay) attemptTestimonialPlayback(v.currentTime, targetIndex).catch(function() {});
-    }).catch(function() { setAttractPlayOverlay(true); });
+    if (tryAutoplay) attemptTestimonialPlayback(video.currentTime).catch(function() {});
   }
   function leaveAttractForWelcome() {
     var attract = document.getElementById('attractScreen');
@@ -2014,7 +1953,6 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
       sessionId: currentSession ? currentSession.session_id : '',
       attract: isAttractScreenActive(),
       videoTime: video && isFinite(video.currentTime) ? video.currentTime : 0,
-      videoIndex: currentTestimonialIndex,
       videoWasPlaying: !!(video && !video.paused && !video.ended),
       savedAt: Date.now()
     };
@@ -2050,7 +1988,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
       card.classList.remove('flipped');
     });
     if (state.attract) {
-      showAttractVideo(state.videoWasPlaying === true, Number(state.videoTime || 0), Number(state.videoIndex || 0));
+      showAttractVideo(state.videoWasPlaying === true, Number(state.videoTime || 0));
     } else {
       showScreen(Math.max(0, Math.min(totalScreens - 1, Number(state.screen || 0))));
     }
@@ -2160,13 +2098,12 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     var playTestimonialBtn = document.getElementById('playTestimonialBtn');
     var touchToBeginBtn = document.getElementById('touchToBeginBtn');
     if (playTestimonialBtn) playTestimonialBtn.addEventListener('click', function() {
-      attemptTestimonialPlayback(testimonialVideo && testimonialVideo.ended ? 0 : undefined, currentTestimonialIndex).catch(function() {});
+      attemptTestimonialPlayback(testimonialVideo && testimonialVideo.ended ? 0 : undefined).catch(function() {});
     });
     if (touchToBeginBtn) touchToBeginBtn.addEventListener('click', leaveAttractForWelcome);
     if (testimonialVideo) {
       testimonialVideo.addEventListener('play', function() { setAttractPlayOverlay(false); });
       testimonialVideo.addEventListener('playing', function() { setAttractPlayOverlay(false); });
-      testimonialVideo.addEventListener('ended', playNextTestimonial);
       testimonialVideo.addEventListener('error', function() { setAttractPlayOverlay(true); });
     }
     var startBtn = document.getElementById('startBtn');
@@ -2228,7 +2165,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.41';
+  var BUILD_VERSION = '1.0.42';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.41-two-testimonial-playlist';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.42-ipad-video-fix';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,10 +6,8 @@ const APP_SHELL = [
   './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './testimonial.mp4',
-  './testimonial_poster.jpg',
-  './testimonial_quintin.mp4',
-  './testimonial_quintin_poster.jpg'
+  './testimonial_playlist.mp4',
+  './testimonial_poster.jpg'
 ];
 
 self.addEventListener('install', event => {

@@ -1,4 +1,11 @@
-# v1.0.41 – Two-Testimonial Opening Playlist
+
+## v1.0.42 - iPad testimonial playback reliability fix
+- Combined the Juanita Thomas and Quintin Griffin testimonials into one continuous 4:13 H.264/AAC MP4.
+- Restored a direct `video.play()` call from the Play Testimonials button so iPadOS recognizes the user gesture for audible playback.
+- Removed the JavaScript source-switching playlist that could leave iPad Safari/PWA paused on the opening red frame.
+- The combined testimonial video loops continuously after the initial successful play action.
+- Preserved Touch to Begin, 60-second return-to-video behavior, orientation recovery, offline caching, and engagement tracking.
+# v1.0.42 – Two-Testimonial Opening Playlist
 
 - Added the full compressed Quintin Griffin testimonial as the second opening video.
 - Opening playlist now plays Juanita Thomas → Quintin Griffin → repeat.
@@ -7,7 +14,7 @@
 - A 60-second kiosk timeout returns to the beginning of the Juanita Thomas testimonial.
 - The second video and its poster are pre-cached for offline playback.
 - Orientation refresh now preserves which testimonial is playing and its playback position.
-- Bumped application and service-worker cache version to v1.0.41.
+- Bumped application and service-worker cache version to v1.0.42.
 
 # v1.0.40 – Welcome Screen Timeout Fix
 
