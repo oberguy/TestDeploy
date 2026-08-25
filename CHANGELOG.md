@@ -1,3 +1,12 @@
+## v1.0.43 - iPad black-screen video loading fix
+- Changed testimonial playback to prepare the full combined MP4 as a local Blob URL before the Play button is enabled.
+- Keeps the poster and Play overlay visible until the video time actually advances.
+- Adds a playback watchdog that restores the Play button if the video starts but fails to progress.
+- Removed cold-launch audible autoplay attempt; the initial iPad launch waits for the required Play tap.
+- Changed testimonial caching to runtime cache-first so service-worker installation no longer waits on the 25 MB video.
+- Preserved automatic restart attempts after the 60-second kiosk timeout.
+- Bumped app/service-worker cache version to v1.0.43.
+
 
 ## v1.0.42 - iPad testimonial playback reliability fix
 - Combined the Juanita Thomas and Quintin Griffin testimonials into one continuous 4:13 H.264/AAC MP4.

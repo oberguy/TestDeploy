@@ -1,4 +1,5 @@
-const CACHE_NAME = 'crc-community-kiosk-v1.0.42-ipad-video-fix';
+const CACHE_NAME = 'crc-community-kiosk-v1.0.43-ipad-video-preload-fix';
+const VIDEO_PATH = './testimonial_playlist.mp4';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,7 +7,6 @@ const APP_SHELL = [
   './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './testimonial_playlist.mp4',
   './testimonial_poster.jpg'
 ];
 
@@ -37,11 +37,34 @@ self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
+function isTestimonialVideo(request) {
+  try {
+    const url = new URL(request.url);
+    return url.pathname.endsWith('/testimonial_playlist.mp4');
+  } catch (e) {
+    return false;
+  }
+}
+
+function cacheFirstVideo(request) {
+  return caches.open(CACHE_NAME).then(cache =>
+    cache.match(request, { ignoreSearch: true }).then(cached => {
+      if (cached) return cached;
+      return fetch(request).then(response => {
+        if (response && response.ok && response.status === 200) {
+          cache.put(request, response.clone());
+        }
+        return response;
+      });
+    })
+  );
+}
+
 function rangeResponseFromCache(request) {
   const rangeHeader = request.headers.get('range');
   if (!rangeHeader) return null;
   return caches.open(CACHE_NAME).then(cache =>
-    cache.match(request.url).then(response => {
+    cache.match(VIDEO_PATH, { ignoreSearch: true }).then(response => {
       if (!response) return fetch(request);
       return response.arrayBuffer().then(buffer => {
         const size = buffer.byteLength;
@@ -61,6 +84,7 @@ function rangeResponseFromCache(request) {
         headers.set('Content-Range', `bytes ${start}-${end}/${size}`);
         headers.set('Content-Length', String(sliced.byteLength));
         headers.set('Accept-Ranges', 'bytes');
+        headers.set('Content-Type', 'video/mp4');
         return new Response(sliced, { status: 206, statusText: 'Partial Content', headers });
       });
     })
@@ -70,12 +94,15 @@ function rangeResponseFromCache(request) {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  if (event.request.headers.has('range')) {
-    const ranged = rangeResponseFromCache(event.request);
-    if (ranged) {
-      event.respondWith(ranged);
-      return;
+  if (isTestimonialVideo(event.request)) {
+    if (event.request.headers.has('range')) {
+      event.respondWith(rangeResponseFromCache(event.request));
+    } else {
+      // The app normally fetches the complete MP4 once and turns it into a local Blob URL.
+      // Cache-first avoids repeated 25 MB downloads and keeps the video available offline.
+      event.respondWith(cacheFirstVideo(event.request));
     }
+    return;
   }
 
   if (event.request.mode === 'navigate') {

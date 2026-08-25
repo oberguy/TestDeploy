@@ -1441,7 +1441,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 
 
 <style>
-/* v1.0.42: iPad-safe combined testimonial video / attract screen */
+/* v1.0.43: iPad video preload/render reliability fix */
 .attract-screen {
   display:none;
   position:relative;
@@ -1449,7 +1449,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   height:100%;
   min-height:100vh;
   min-height:100dvh;
-  background:#000;
+  background:#000 url('./testimonial_poster.jpg') center center / contain no-repeat;
   overflow:hidden;
   align-items:center;
   justify-content:center;
@@ -1459,8 +1459,12 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   width:100%;
   height:100%;
   object-fit:contain;
-  background:#000;
+  background:transparent;
+  opacity:0;
+  transition:opacity .18s linear;
 }
+.attract-video.video-visible { opacity:1; }
+.attract-play-button:disabled { opacity:.68; cursor:default; }
 .attract-play-overlay {
   position:absolute;
   inset:0;
@@ -1532,14 +1536,13 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <body>
 <div class="app">
 <section class="attract-screen active" id="attractScreen" aria-label="Opening testimonial video">
-  <video class="attract-video" id="testimonialVideo" preload="metadata" playsinline webkit-playsinline poster="./testimonial_poster.jpg" loop>
-    <source src="./testimonial_playlist.mp4" type="video/mp4"/>
+  <video class="attract-video" id="testimonialVideo" preload="none" playsinline webkit-playsinline poster="./testimonial_poster.jpg" loop>
     Your browser does not support the testimonial video.
   </video>
   <div class="attract-play-overlay" id="attractPlayOverlay">
     <p class="attract-play-title">Hear personal stories about colorectal cancer screening</p>
-    <button class="attract-play-button" id="playTestimonialBtn" type="button">Play Testimonials</button>
-    <p class="attract-audio-note">Tap Play Testimonials to hear the testimonials with sound.</p>
+    <button class="attract-play-button" id="playTestimonialBtn" type="button" disabled>Preparing Video…</button>
+    <p class="attract-audio-note" id="attractAudioNote">Preparing the testimonial video for reliable iPad playback…</p>
   </div>
   <button class="attract-begin-button" id="touchToBeginBtn" type="button">Touch to Begin</button>
 </section>
@@ -1549,7 +1552,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
 <h1>Learn About Colon Cancer Screening</h1>
 <p class="tagline">Screening can help find colon cancer early—or even prevent it.</p>
 <button class="primary-btn" id="startBtn" type="button">Start Learning</button>
-<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.42">v1.0.42</div>
+<div class="welcome-version" id="welcomeVersion" aria-label="Application version 1.0.43">v1.0.43</div>
 <div class="admin"><button id="adminBtn" type="button">Admin</button></div>
 <div class="admin-panel" id="adminPanel"><div style="font-weight:700;margin-bottom:8px;">Engagement data are saved locally on this device.</div><div id="engagementSummary" style="font-size:14px;line-height:1.5;margin:8px 0 10px;padding:9px;background:#f3f7fa;border-radius:9px;">Loading engagement summary…</div><button id="downloadCsvBtn" type="button">Download engagement CSV</button><button id="clearDataBtn" type="button">Clear local data</button></div>
 </section>
@@ -1840,6 +1843,10 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     if (overlay) overlay.classList.remove('show');
     if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
   }
+  var testimonialObjectUrl = null;
+  var testimonialPreparePromise = null;
+  var testimonialProgressTimer = null;
+
   function isAttractScreenActive() {
     var attract = document.getElementById('attractScreen');
     return !!(attract && attract.classList.contains('active'));
@@ -1849,24 +1856,141 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     if (!overlay) return;
     overlay.classList.toggle('hidden', !show);
   }
-  function attemptTestimonialPlayback(startAt) {
+  function setTestimonialVideoVisible(show) {
+    var video = document.getElementById('testimonialVideo');
+    if (video) video.classList.toggle('video-visible', !!show);
+  }
+  function setTestimonialButtonState(ready, label, note) {
+    var button = document.getElementById('playTestimonialBtn');
+    var noteEl = document.getElementById('attractAudioNote');
+    if (button) {
+      button.disabled = !ready;
+      button.textContent = label || (ready ? 'Play Testimonials' : 'Preparing Video…');
+    }
+    if (noteEl && note) noteEl.textContent = note;
+  }
+  function waitForVideoMetadata(video) {
+    return new Promise(function(resolve, reject) {
+      if (video.readyState >= 1) { resolve(video); return; }
+      var done = false;
+      var timer = setTimeout(function() {
+        if (done) return;
+        done = true; cleanup(); reject(new Error('Timed out while preparing testimonial video'));
+      }, 20000);
+      function cleanup() {
+        clearTimeout(timer);
+        video.removeEventListener('loadedmetadata', onLoaded);
+        video.removeEventListener('error', onError);
+      }
+      function onLoaded() { if (done) return; done = true; cleanup(); resolve(video); }
+      function onError() { if (done) return; done = true; cleanup(); reject(new Error('Unable to load testimonial video')); }
+      video.addEventListener('loadedmetadata', onLoaded);
+      video.addEventListener('error', onError);
+    });
+  }
+  function prepareTestimonialVideo() {
     var video = document.getElementById('testimonialVideo');
     if (!video) return Promise.reject(new Error('Testimonial video unavailable'));
+    if (testimonialPreparePromise) return testimonialPreparePromise;
+
+    setTestimonialVideoVisible(false);
+    setAttractPlayOverlay(true);
+    setTestimonialButtonState(false, 'Preparing Video…', 'Preparing the testimonial video for reliable iPad playback…');
+
+    testimonialPreparePromise = fetch('./testimonial_playlist.mp4', { cache:'force-cache' })
+      .then(function(response) {
+        if (!response.ok) throw new Error('Video request failed: ' + response.status);
+        return response.blob();
+      })
+      .then(function(blob) {
+        if (testimonialObjectUrl) { try { URL.revokeObjectURL(testimonialObjectUrl); } catch (e) {} }
+        testimonialObjectUrl = URL.createObjectURL(blob);
+        video.src = testimonialObjectUrl;
+        video.load();
+        return waitForVideoMetadata(video);
+      })
+      .then(function() {
+        setTestimonialButtonState(true, 'Play Testimonials', 'Tap Play Testimonials to hear the testimonials with sound.');
+        return video;
+      })
+      .catch(function(blobError) {
+        // Network/direct URL fallback. The normal path above uses a local Blob URL so
+        // iPadOS does not have to seek through the service worker while playing.
+        try { video.removeAttribute('src'); } catch (e) {}
+        video.src = './testimonial_playlist.mp4';
+        video.load();
+        return waitForVideoMetadata(video).then(function() {
+          setTestimonialButtonState(true, 'Play Testimonials', 'Tap Play Testimonials to hear the testimonials with sound.');
+          return video;
+        }).catch(function() {
+          setTestimonialButtonState(false, 'Video Unavailable', 'The testimonial video could not be prepared. Reopen the kiosk while it is online and try again.');
+          throw blobError;
+        });
+      });
+    return testimonialPreparePromise;
+  }
+  function stopTestimonialProgressWatch() {
+    if (testimonialProgressTimer) { clearInterval(testimonialProgressTimer); testimonialProgressTimer = null; }
+  }
+  function confirmTestimonialProgress() {
+    var video = document.getElementById('testimonialVideo');
+    if (!video || video.paused) return;
+    setTestimonialVideoVisible(true);
+    setAttractPlayOverlay(false);
+    setTestimonialButtonState(true, 'Play Testimonials', 'Tap Play Testimonials to hear the testimonials with sound.');
+    stopTestimonialProgressWatch();
+  }
+  function watchTestimonialProgress(startTime) {
+    var video = document.getElementById('testimonialVideo');
+    if (!video) return;
+    stopTestimonialProgressWatch();
+    var checks = 0;
+    var baseline = typeof startTime === 'number' && isFinite(startTime) ? startTime : video.currentTime;
+    testimonialProgressTimer = setInterval(function() {
+      checks += 1;
+      if (!video.paused && video.currentTime > baseline + 0.08) {
+        confirmTestimonialProgress();
+        return;
+      }
+      if (checks >= 10) {
+        stopTestimonialProgressWatch();
+        try { video.pause(); } catch (e) {}
+        setTestimonialVideoVisible(false);
+        setAttractPlayOverlay(true);
+        setTestimonialButtonState(true, 'Play Testimonials', 'The video did not start. Tap Play Testimonials to try again.');
+      }
+    }, 400);
+  }
+  function attemptTestimonialPlayback(startAt) {
+    var video = document.getElementById('testimonialVideo');
+    var button = document.getElementById('playTestimonialBtn');
+    if (!video) return Promise.reject(new Error('Testimonial video unavailable'));
+    if (button && button.disabled) return Promise.reject(new Error('Testimonial video is still preparing'));
     try {
       if (typeof startAt === 'number' && isFinite(startAt)) video.currentTime = Math.max(0, startAt);
       video.muted = false;
       video.volume = 1;
     } catch (e) {}
+    setAttractPlayOverlay(true);
+    setTestimonialButtonState(false, 'Starting…', 'Starting the testimonials with sound…');
+    var baseline = video.currentTime;
     var result;
     // Keep play() directly in the user-click call path for iPadOS audible-media policy.
-    try { result = video.play(); } catch (e) { setAttractPlayOverlay(true); return Promise.reject(e); }
+    try { result = video.play(); } catch (e) {
+      setTestimonialButtonState(true, 'Play Testimonials', 'Tap Play Testimonials to hear the testimonials with sound.');
+      setAttractPlayOverlay(true);
+      return Promise.reject(e);
+    }
+    watchTestimonialProgress(baseline);
     if (result && typeof result.then === 'function') {
-      return result.then(function() { setAttractPlayOverlay(false); }).catch(function(err) {
+      return result.catch(function(err) {
+        stopTestimonialProgressWatch();
+        setTestimonialVideoVisible(false);
         setAttractPlayOverlay(true);
+        setTestimonialButtonState(true, 'Play Testimonials', 'Tap Play Testimonials to hear the testimonials with sound.');
         throw err;
       });
     }
-    setAttractPlayOverlay(false);
     return Promise.resolve();
   }
 
@@ -1882,15 +2006,19 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     if (attract) attract.classList.add('active');
     currentScreen = -1;
     window.scrollTo(0, 0);
+    setTestimonialVideoVisible(false);
+    setAttractPlayOverlay(true);
     if (!video) return;
     try {
       video.pause();
-      video.currentTime = typeof startAt === 'number' && isFinite(startAt) ? Math.max(0, startAt) : 0;
+      if (video.readyState >= 1) video.currentTime = typeof startAt === 'number' && isFinite(startAt) ? Math.max(0, startAt) : 0;
       video.muted = false;
       video.volume = 1;
     } catch (e) {}
-    setAttractPlayOverlay(true);
-    if (tryAutoplay) attemptTestimonialPlayback(video.currentTime).catch(function() {});
+    prepareTestimonialVideo().then(function() {
+      if (typeof startAt === 'number' && isFinite(startAt)) { try { video.currentTime = Math.max(0, startAt); } catch (e) {} }
+      if (tryAutoplay) attemptTestimonialPlayback(video.currentTime).catch(function() {});
+    }).catch(function() {});
   }
   function leaveAttractForWelcome() {
     var attract = document.getElementById('attractScreen');
@@ -2098,14 +2226,22 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
     var playTestimonialBtn = document.getElementById('playTestimonialBtn');
     var touchToBeginBtn = document.getElementById('touchToBeginBtn');
     if (playTestimonialBtn) playTestimonialBtn.addEventListener('click', function() {
+      if (playTestimonialBtn.disabled) return;
       attemptTestimonialPlayback(testimonialVideo && testimonialVideo.ended ? 0 : undefined).catch(function() {});
     });
     if (touchToBeginBtn) touchToBeginBtn.addEventListener('click', leaveAttractForWelcome);
     if (testimonialVideo) {
-      testimonialVideo.addEventListener('play', function() { setAttractPlayOverlay(false); });
-      testimonialVideo.addEventListener('playing', function() { setAttractPlayOverlay(false); });
-      testimonialVideo.addEventListener('error', function() { setAttractPlayOverlay(true); });
+      testimonialVideo.addEventListener('timeupdate', function() {
+        if (!testimonialVideo.paused && testimonialVideo.currentTime > 0.05) confirmTestimonialProgress();
+      });
+      testimonialVideo.addEventListener('error', function() {
+        stopTestimonialProgressWatch();
+        setTestimonialVideoVisible(false);
+        setAttractPlayOverlay(true);
+        setTestimonialButtonState(false, 'Video Unavailable', 'The testimonial video could not be loaded. Reopen the kiosk while it is online and try again.');
+      });
     }
+    prepareTestimonialVideo().catch(function() {});
     var startBtn = document.getElementById('startBtn');
     if (startBtn) startBtn.addEventListener('click', async function() { await storageReady; startSession(); showScreen(1); resetInactivityTimer(); });
     document.querySelectorAll('[data-go]').forEach(function(btn) { btn.addEventListener('click', function() { showScreen(parseInt(btn.getAttribute('data-go'),10)); }); });
@@ -2147,7 +2283,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
         resetInactivityTimer();
       }, {passive:true});
     });
-    restoreAfterOrientationChange().then(function(restored) { if (!restored) showAttractVideo(true, 0); });
+    restoreAfterOrientationChange().then(function(restored) { if (!restored) showAttractVideo(false, 0); });
     window.addEventListener('orientationchange', scheduleOrientationRefresh);
     if (window.screen && window.screen.orientation && window.screen.orientation.addEventListener) {
       window.screen.orientation.addEventListener('change', scheduleOrientationRefresh);
@@ -2165,7 +2301,7 @@ h2:after{content:"";display:block;width:72px;height:5px;border-radius:999px;back
   var refreshing = false;
   var updateRegistration = null;
   var updateOverlay = document.getElementById('appUpdateOverlay');
-  var BUILD_VERSION = '1.0.42';
+  var BUILD_VERSION = '1.0.43';
 
   function activateWaitingWorker(registration) {
     if (!registration || !registration.waiting) return false;
